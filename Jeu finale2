@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Mini Games Hub - HeavenGame Edition</title>
+<style>
+html, body { height:100%; margin:0; font-family:Arial,sans-serif; background:#050010; color:#0ff; overflow:hidden; }
+canvas { display:block; margin:0 auto; background:#000; }
+
+#mainMenu, #gameMenu { 
+  position:absolute; left:0; top:0; right:0; bottom:0; 
+  display:flex; flex-direction:column; align-items:center; justify-content:center; 
+  background:radial-gradient(circle at center, #050010 0%, #000 100%); 
+  z-index:40; transition: opacity 0.4s;
+}
+
+.menu-title { font-size:72px; color:#0ff; text-shadow:0 0 18px #0ff,0 0 50px rgba(0,255,255,0.07); margin-bottom:24px; letter-spacing:6px; }
+
+.menu-btn { 
+  background:#0b0b0b; border:2px solid #0ff; color:#0ff; font-size:22px; padding:14px 30px; 
+  border-radius:12px; margin:10px; cursor:pointer; transition:all .2s; position:relative; overflow:hidden;
+}
+.menu-btn:hover { 
+  background:#0ff; color:#000; transform:translateY(-3px); box-shadow:0 0 20px #0ff,0 0 40px rgba(0,255,255,0.2);
+}
+
+.menu-btn img {
+  width:220px; height:120px; object-fit:cover; border-radius:8px; margin-bottom:8px; display:block; pointer-events:none;
+}
+
+#ui { position:absolute; top:10px; left:50%; transform:translateX(-50%); color:#0ff; font-size:18px; user-select:none; text-align:center; z-index:30; display:none; }
+#buttons { margin-top:8px; }
+.small-btn { background:#111; border:1px solid #0ff; color:#0ff; padding:6px 12px; margin:3px; border-radius:6px; cursor:pointer; }
+.small-btn:hover { background:#0ff; color:#000; }
+#volumeSlider, #menuVolume { vertical-align:middle; width:140px; margin-top:6px; }
+
+#overlay { position:absolute; left:0; top:0; right:0; bottom:0; z-index:35; display:flex; align-items:center; justify-content:center; pointer-events:none; }
+
+</style>
+</head>
+<body>
+
+<!-- MENU PRINCIPAL -->
+<div id="mainMenu">
+  <div class="menu-title">MINI GAMES HUB</div>
+  
+  <!-- Mini-jeu Heaven Game -->
+  <button class="menu-btn" id="miniGame1">
+    <img src="https://i.imgur.com/9Vx2sUo.png" alt="Dodge Cube">
+    Dodge Cube
+  </button>
+  
+  <button class="menu-btn" id="miniGame2">
+    <img src="https://i.imgur.com/QT3J7fR.png" alt="Placeholder"> Mini-Jeu 2
+  </button>
+  
+  <button class="menu-btn" id="miniGame3">
+    <img src="https://i.imgur.com/QT3J7fR.png" alt="Placeholder"> Mini-Jeu 3
+  </button>
+</div>
+
+<!-- MENU DU JEU SÉLECTIONNÉ -->
+<div id="gameMenu" style="display:none;">
+  <div class="menu-title">HEAVEN GAME</div>
+  <button class="menu-btn" id="btnPlay">Jouer</button>
+  <button class="menu-btn" id="btnBest">Meilleur score</button>
+  <div style="margin-top:18px; color:#9bd;">
+    Volume : <input type="range" id="menuVolume" min="0" max="100" value="30">
+  </div>
+  <small style="margin-top:18px; color:#556;">Dark Neon Edition — Clique sur "Jouer"</small>
+</div>
+
+<!-- UI en jeu -->
+<div id="ui">
+  Score: <span id="score">0</span> | Meilleur: <span id="best">0</span>
+  <div id="buttons">
+    <button class="small-btn" id="btnRestart">Relancer</button>
+    <button class="small-btn" id="btnPause">Pause</button>
+    <br>
+    Volume: <input type="range" id="volumeSlider" min="0" max="100" value="30">
+  </div>
+</div>
+
+<canvas id="game"></canvas>
+<audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
+<div id="overlay"></div>
+
+<script>
+// ---------------- MENU LOGIQUE ----------------
+const mainMenu = document.getElementById('mainMenu');
+const gameMenu = document.getElementById('gameMenu');
+const ui = document.getElementById('ui');
+const music = document.getElementById('bgMusic');
+
+document.getElementById('miniGame1').onclick = ()=>{
+  mainMenu.style.opacity='0';
+  setTimeout(()=>{ mainMenu.style.display='none'; gameMenu.style.display='flex'; gameMenu.style.opacity='1'; },400);
+};
+
+document.getElementById('btnPlay').onclick = ()=>{
+  gameMenu.style.opacity='0';
+  setTimeout(()=>{
+    gameMenu.style.display='none';
+    ui.style.display='block';
+    music.play().catch(()=>{});
+    restart();
+  },400);
+};
+
+// ---------------- GAME LOGIQUE ----------------
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+let W = canvas.width = window.innerWidth;
+let H = canvas.height = window.innerHeight;
+window.addEventListener('resize', ()=>{ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; });
+
+const scoreEl = document.getElementById('score');
+const bestEl = document.getElementById('best');
+const btnRestart = document.getElementById('btnRestart');
+const btnPause = document.getElementById('btnPause');
+const volumeSlider = document.getElementById('volumeSlider');
+const menuVolume = document.getElementById('menuVolume');
+const overlay = document.getElementById('overlay');
+
+let player, obstacles=[], particles=[];
+let obstacleTimer=0, score=0, best=Number(localStorage.getItem('neonBest')||0);
+bestEl.textContent=best;
+let baseSpeed=1.6, spawnInterval=90, frame=0, paused=false, gameOver=false;
+let difficultyLevel=0;
+const maxObstacles=120, initialSpawnCount=8;
+let jumping=false, vy=0;
+
+// --------- INIT PARTICULES ---------
+function initParticles(){
+  particles = [];
+  for(let i=0;i<180;i++){
+    particles.push({ x:Math.random()*W, y:Math.random()*H, r:Math.random()*2+1.2, dx:(Math.random()-0.5)*0.35, dy:(Math.random()-0.5)*0.35, alpha:Math.random()*0.45+0.15 });
+  }
+}
+
+// --------- INIT PLAYER ---------
+function initPlayer(){ player={x:W/2,y:H-80,w:44,h:44,dx:0,speed:6,color:'#00ffff',trail:[],inertia:0}; }
+function jump(){ if(!jumping){ jumping=true; vy=-12; } }
+function togglePause(){ paused=!paused; if(paused) music.pause(); else music.play().catch(()=>{}); }
+
+// --------- OBSTACLES ---------
+function createObstacle(sizeOverride){
+  const size = sizeOverride || (30 + Math.random()*35);
+  const x = Math.max(0, Math.min(W-size, Math.random()*(W-size)));
+  const speedMod = (Math.random()*0.85)-0.25;
+  const osc = (Math.random()*1.6)-0.8;
+  const rot = (Math.random()*0.3)-0.15;
+  const colors = ['#ff00ff','#00ffff','#ffff00','#ff8800','#66ff66'];
+  obstacles.push({ x,y:-size-Math.random()*200,w:size,h:size,color:colors[Math.floor(Math.random()*colors.length)],speedMod,osc,dir:(Math.random()<0.5?-1:1),rot,angle:Math.random()*Math.PI*2 });
+}
+function spawnInitialBurst(n){ for(let i=0;i<n;i++) createObstacle(28+Math.random()*50); }
+
+// --------- RESTART ---------
+function restart(){
+  if(animationId) cancelAnimationFrame(animationId);
+  score=0; scoreEl.textContent=score;
+  obstacles=[]; obstacleTimer=0; frame=0; paused=false; gameOver=false; difficultyLevel=0;
+  baseSpeed=1.6; spawnInterval=90;
+  initPlayer(); initParticles(); spawnInitialBurst(initialSpawnCount); overlay.innerHTML='';
+  loop();
+}
+
+// --------- DIFFICULTÉ ---------
+function onDifficultyLevelUp(){
+  difficultyLevel++; baseSpeed+=0.6; spawnInterval=Math.max(30,spawnInterval-18);
+  obstacles.forEach(o=>{o.w*=1.7;o.h*=1.7;});
+  const el=document.createElement('div'); el.style.pointerEvents='none';
+  el.style.position='absolute'; el.style.left='50%'; el.style.top='18%';
+  el.style.transform='translateX(-50%)'; el.style.padding='10px 18px';
+  el.style.borderRadius='10px'; el.style.fontFamily='Arial, sans-serif'; el.style.fontSize='22px';
+  el.style.color='#000'; el.style.background='#ff66cc'; el.style.opacity='0.95';
+  overlay.appendChild(el); el.textContent=`PALIER ${difficultyLevel}`;
+  setTimeout(()=>{el.style.transition='opacity 600ms'; el.style.opacity='0'; setTimeout(()=>el.remove(),700);},700);
+}
+
+// --------- CONTROLES ---------
+document.addEventListener('keydown',e=>{
+  if(e.code==='ArrowLeft'||e.code==='KeyA') player.dx=-player.speed;
+  if(e.code==='ArrowRight'||e.code==='KeyD') player.dx=player.speed;
+  if(e.code==='Space'&&!gameOver) jump();
+  if(e.code==='KeyP') togglePause();
+});
+document.addEventListener('keyup',e=>{ if(['ArrowLeft','KeyA','ArrowRight','KeyD'].includes(e.code)) player.dx=0; });
+canvas.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){ const t=e.touches[0].clientX; player.dx=(t<W/2?-player.speed:player.speed); }
+  if(e.touches.length===2) jump();
+});
+canvas.addEventListener('touchend',()=>{ player.dx=0; });
+
+// --------- UPDATE ---------
+function update(){
+  if(paused||gameOver) return;
+  frame++;
+  if(score>=(difficultyLevel+1)*100) onDifficultyLevelUp();
+
+  player.inertia+=(player.dx-player.inertia)*0.22;
+  player.x+=player.inertia;
+  player.x=Math.max(0,Math.min(W-player.w,player.x));
+  if(jumping){ player.y+=vy; vy+=0.6; if(player.y>=H-80){player.y=H-80;jumping=false;vy=0;} }
+
+  player.trail.push({x:player.x+player.w/2,y:player.y+player.h/2}); if(player.trail.length>16) player.trail.shift();
+
+  obstacleTimer++;
+  if(obstacleTimer>spawnInterval){ 
+    if(obstacles.length<maxObstacles){ const spawnCount=1+Math.floor(Math.random()*3); for(let s=0;s<spawnCount;s++) createObstacle(); }
+    obstacleTimer=0;
+  }
+
+  for(let i=obstacles.length-1;i>=0;i--){
+    const o=obstacles[i]; o.y+=baseSpeed+o.speedMod; o.x+=o.osc*o.dir; o.angle+=o.rot;
+    if(o.x<0 || o.x+o.w>W) o.dir*=-1;
+    if(o.y>H){ obstacles.splice(i,1); score++; scoreEl.textContent=score; if(score>best){ best=score; localStorage.setItem('neonBest',best); bestEl.textContent=best; } }
+    if(o.x<player.x+player.w && o.x+o.w>player.x && o.y<player.y+player.h && o.y+o.h>player.y) gameOver=true;
+  }
+
+  for(const p of particles){ p.x+=p.dx; p.y+=p.dy; if(p.x<0)p.x=W; if(p.x>W)p.x=0; if(p.y<0)p.y=H; if(p.y>H)p.y=0; }
+}
+
+// --------- DRAW ---------
+function draw(){
+  const grad=ctx.createLinearGradient(0,0,W,H); grad.addColorStop(0,"#0b001f"); grad.addColorStop(1,"#000010");
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,H);
+
+  for(const p of particles){ ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fillStyle=`rgba(0,255,255,${p.alpha})`; ctx.shadowColor="#0ff"; ctx.shadowBlur=6; ctx.fill(); ctx.shadowBlur=0; }
+
+  ctx.save(); ctx.font="80px Arial"; ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.globalAlpha=0.08; ctx.fillStyle="#0ff"; ctx.shadowColor="#0ff"; ctx.shadowBlur=20; ctx.fillText("HEAVEN GAME", W/2, H/3); ctx.restore(); ctx.globalAlpha=1;
+
+  ctx.beginPath();
+  for(let i=0;i<player.trail.length;i++){ const t=player.trail[i]; const alpha=(i+1)/player.trail.length*0.6; if(i===0) ctx.moveTo(t.x,t.y); else ctx.lineTo(t.x,t.y); }
+  ctx.strokeStyle='rgba(0,255,255,0.5)'; ctx.lineWidth=3; ctx.stroke();
+
+  ctx.fillStyle=player.color; ctx.shadowColor=player.color; ctx.shadowBlur=20;
+  ctx.fillRect(player.x,player.y,player.w,player.h);
+
+  ctx.shadowBlur=10; for(const o of obstacles){ ctx.save(); ctx.translate(o.x+o.w/2,o.y+o.h/2); ctx.rotate(o.angle); ctx.fillStyle=o.color; ctx.fillRect(-o.w/2,-o.h/2,o.w,o.h); ctx.restore(); } ctx.shadowBlur=0;
+
+  if(gameOver){ ctx.fillStyle="#ff0080"; ctx.font="50px Arial"; ctx.fillText("GAME OVER",W/2,H/2); }
+}
+
+// --------- LOOP ---------
+let animationId;
+function loop(){ update(); draw(); animationId=requestAnimationFrame(loop); }
+
+// --------- BOUTONS ---------
+btnRestart.onclick=()=>restart();
+btnPause.onclick=()=>togglePause();
+volumeSlider.oninput=e=>music.volume=e.target.value/100;
+menuVolume.oninput=e=>music.volume=e.target.value/100;
+
+// --------- LAUNCH ---------
+initPlayer(); initParticles();
+</script>
+
+</body>
+</html>
