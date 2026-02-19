@@ -58,13 +58,29 @@
     function refresh(){const v=offerSelect.value;offerName.textContent=offers[v].label;offerPrice.textContent=offers[v].price+'€';}
     offerSelect.addEventListener('change',refresh);refresh();
 
+    async function parseApiResponse(res){
+      const raw = await res.text();
+      if(!raw){
+        return { ok: res.ok, data: {}, error: 'Réponse vide du serveur. Lance le site avec: python3 server.py' };
+      }
+      try {
+        const data = JSON.parse(raw);
+        return { ok: res.ok, data, error: data.error || null };
+      } catch(_){
+        return { ok: res.ok, data: {}, error: 'Réponse non-JSON. Vérifie que tu utilises python3 server.py (pas python3 -m http.server).' };
+      }
+    }
+
     document.getElementById('pay-form').addEventListener('submit',async (e)=>{
       e.preventDefault();
       state.className='state'; state.textContent='Création de la session Stripe...';
       try {
         const res=await fetch('/api/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({offer:offerSelect.value,email:document.getElementById('email').value,name:document.getElementById('fullname').value})});
-        const data=await res.json();
-        if(!res.ok){throw new Error(data.error||'Erreur Stripe');}
+        const parsed = await parseApiResponse(res);
+        if(!parsed.ok){
+          throw new Error(parsed.error || 'Erreur Stripe');
+        }
+        const data = parsed.data;
         if(data.url){window.location.href=data.url;return;}
         if(data.sessionId&&data.publishableKey){
           const stripe=Stripe(data.publishableKey);
