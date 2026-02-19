@@ -3,19 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HeavenGraphX — Graphiste Bannières, Logos & Formations</title>
+  <title>HeavenGraphX — Studio Graphisme Premium</title>
   <style>
     :root {
-      --bg: #0f1115;
-      --bg2: #141823;
-      --card: #1b202c;
-      --line: #323949;
-      --text: #fdf7e2;
-      --muted: #d9ceaa;
+      --bg: #090b10;
+      --bg-soft: #121722;
+      --card: #171d2a;
+      --line: #2d364a;
+      --text: #f8f4e7;
+      --muted: #c8bea1;
       --yellow: #f7c948;
-      --yellow2: #ffe39a;
-      --shadow: 0 18px 42px rgba(0,0,0,.45);
+      --yellow-soft: #ffe7a9;
+      --accent: #f3a81c;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
     }
+
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
@@ -23,170 +25,251 @@
       font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 8% -15%, rgba(247,201,72,.26), transparent 38%),
-        radial-gradient(circle at 95% 10%, rgba(255,227,154,.16), transparent 28%),
-        linear-gradient(180deg, var(--bg2), var(--bg));
+        radial-gradient(circle at 5% -10%, rgba(247, 201, 72, 0.18), transparent 35%),
+        radial-gradient(circle at 100% 0%, rgba(243, 168, 28, 0.18), transparent 22%),
+        linear-gradient(150deg, #0c1018 0%, #090b10 45%, #05070b 100%);
     }
-    .container { width: min(1340px, 94vw); margin: 0 auto; }
+
+    .container { width: min(1440px, 94vw); margin: 0 auto; }
 
     header {
       position: sticky;
       top: 0;
-      z-index: 20;
-      background: rgba(15, 17, 21, .85);
-      backdrop-filter: blur(10px);
+      z-index: 40;
+      background: rgba(9, 11, 16, 0.84);
       border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
     }
+
     .nav {
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding: 1rem 0;
       gap: 1rem;
-      padding: .95rem 0;
     }
-    .logo { font-size: 1.22rem; font-weight: 900; letter-spacing: .3px; }
+
+    .logo {
+      font-weight: 900;
+      letter-spacing: .3px;
+      font-size: 1.24rem;
+    }
+
     .logo span { color: var(--yellow); }
-    nav ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 1.2rem; }
-    nav a { text-decoration: none; color: #f7efcf; font-size: .95rem; }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      gap: 1.15rem;
+    }
+
+    nav a {
+      color: #f8efcb;
+      text-decoration: none;
+      font-size: .95rem;
+      opacity: .94;
+    }
+
+    nav a:hover { color: var(--yellow-soft); }
 
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      border: 0;
       border-radius: 12px;
+      border: 0;
       text-decoration: none;
-      cursor: pointer;
       font-weight: 800;
-      padding: .78rem 1.05rem;
+      padding: .78rem 1.08rem;
+      cursor: pointer;
+      transition: transform .2s ease;
     }
+
+    .btn:hover { transform: translateY(-1px); }
+
     .btn-primary {
-      color: #261900;
-      background: linear-gradient(135deg, var(--yellow), var(--yellow2));
-      box-shadow: 0 12px 26px rgba(247,201,72,.35);
+      color: #271b00;
+      background: linear-gradient(130deg, var(--yellow), var(--yellow-soft));
+      box-shadow: 0 11px 28px rgba(247, 201, 72, 0.34);
     }
-    .btn-dark {
-      color: var(--yellow2);
-      border: 1px solid rgba(255,227,154,.45);
-      background: rgba(255,227,154,.08);
+
+    .btn-ghost {
+      color: var(--yellow-soft);
+      border: 1px solid rgba(255, 231, 169, .4);
+      background: rgba(255, 231, 169, .08);
     }
 
     .hero {
+      padding: 5rem 0 2.8rem;
       display: grid;
       grid-template-columns: 1.05fr .95fr;
-      gap: 1.2rem;
+      gap: 1.1rem;
       align-items: center;
-      padding: 4.7rem 0 2.8rem;
     }
+
     h1 {
-      margin: 0 0 .85rem;
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      line-height: 1.05;
-      max-width: 18ch;
+      margin: 0 0 .9rem;
+      font-size: clamp(2.3rem, 5.2vw, 4.3rem);
+      line-height: 1.03;
+      max-width: 16ch;
     }
+
     .grad {
-      background: linear-gradient(130deg, #fff0c5, var(--yellow), #ca9506);
+      background: linear-gradient(125deg, #fff2c8 0%, #f7c948 50%, #cc8f00 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .subtitle { margin: 0 0 1.1rem; color: var(--muted); max-width: 65ch; }
+
+    .subtitle {
+      margin: 0 0 1.2rem;
+      color: var(--muted);
+      max-width: 62ch;
+      font-size: 1.02rem;
+    }
+
     .hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; }
-    .stats { margin-top: .85rem; display: flex; flex-wrap: wrap; gap: .55rem; }
+
+    .pill-row {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+    }
+
     .pill {
       border: 1px solid var(--line);
       border-radius: 999px;
-      padding: .35rem .7rem;
+      padding: .36rem .75rem;
+      color: #f6ebc9;
+      background: rgba(255, 255, 255, .02);
       font-size: .82rem;
-      color: #f5e8c0;
-      background: rgba(255,255,255,.02);
     }
 
-    .hero-card {
-      border: 1px solid var(--line);
+    .hero-showcase {
       border-radius: 20px;
+      border: 1px solid var(--line);
       padding: .85rem;
-      background: linear-gradient(165deg,#222734,#161b25);
+      background: linear-gradient(160deg, #1f2737, #141b27);
       box-shadow: var(--shadow);
     }
-    .hero-card img { width: 100%; display: block; border-radius: 14px; aspect-ratio: 21/9; object-fit: cover; }
 
-    section { padding: 2.45rem 0; }
-    .section-title { margin: 0; font-size: 1.95rem; }
-    .section-sub { margin: .3rem 0 1.15rem; color: var(--muted); }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px,1fr)); gap: 1rem; }
+    .hero-showcase img {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+      aspect-ratio: 21/9;
+      object-fit: cover;
+    }
+
+    section { padding: 2.5rem 0; }
+    .section-title { margin: 0; font-size: 2rem; }
+    .section-sub { margin: .35rem 0 1.2rem; color: var(--muted); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem; }
 
     .card {
-      background: linear-gradient(165deg, #232937, #181d28);
       border: 1px solid var(--line);
       border-radius: 16px;
-      padding: 1.12rem;
+      background: linear-gradient(165deg, #1c2434, #141a26);
+      padding: 1.15rem;
       box-shadow: var(--shadow);
     }
+
     .tag {
       display: inline-block;
-      margin-bottom: .6rem;
+      padding: .22rem .6rem;
       border-radius: 999px;
-      padding: .22rem .55rem;
       font-size: .78rem;
       font-weight: 800;
-      color: #2a1f00;
-      background: linear-gradient(135deg, #ffe7aa, var(--yellow));
+      color: #2f2200;
+      background: linear-gradient(130deg, #ffe7ae, #f7c948);
+      margin-bottom: .55rem;
     }
-    .service-list { margin: .55rem 0 1rem; padding-left: 1.1rem; color: #ebddb4; }
-    .old-price { color: #9aa2b3; text-decoration: line-through; font-size: .92rem; }
-    .price { margin: .5rem 0 .9rem; font-size: 1.55rem; font-weight: 900; color: var(--yellow2); }
-    .card .btn { width: 100%; }
+
+    .service-list { margin: .55rem 0 1rem; padding-left: 1.1rem; color: #e9ddba; }
+    .old-price { color: #9ca5b7; text-decoration: line-through; font-size: .92rem; }
+    .price { margin: .55rem 0 .85rem; font-size: 1.55rem; font-weight: 900; color: var(--yellow-soft); }
 
     .banner-grid { display: grid; gap: 1rem; }
+
     .banner-item {
-      border: 1px solid #5b4919;
+      border: 1px solid #594920;
       border-radius: 16px;
       overflow: hidden;
-      background: #0f1218;
+      background: #0f1219;
     }
+
     .banner-item img {
       display: block;
       width: 100%;
-      aspect-ratio: 21 / 9;
+      aspect-ratio: 21/9;
       object-fit: cover;
     }
-    .banner-caption { margin: 0; padding: .72rem .9rem; color: #efdeae; font-size: .92rem; }
 
-    .portfolio-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; }
-    .portfolio-card { min-height: 180px; }
+    .banner-caption { margin: 0; padding: .75rem .9rem; color: #eadcad; font-size: .93rem; }
+
+    .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; }
+    .step-num { font-size: 1.9rem; font-weight: 900; color: var(--yellow-soft); margin: 0; }
+
+    .offer-wrap {
+      border: 1px solid #7c611f;
+      border-radius: 18px;
+      background: linear-gradient(155deg, rgba(247, 201, 72, .09), rgba(247, 201, 72, .03));
+      padding: 1.2rem;
+      margin-top: 1rem;
+    }
+
+    .offer-infos {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .bonus-list { margin: .55rem 0 0; padding-left: 1.05rem; color: #f2e2b6; }
 
     .pay-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    .pay-list { margin: .6rem 0 0; padding-left: 1rem; color: #efdfae; }
+    .pay-list { margin: .55rem 0 0; padding-left: 1rem; color: #ecdcae; }
 
     .contact { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
     form {
-      background: linear-gradient(160deg, #222733, #181c25);
       border: 1px solid var(--line);
       border-radius: 16px;
+      background: linear-gradient(160deg, #1f2736, #151a25);
       padding: 1rem;
     }
+
     input, textarea {
       width: 100%;
-      border: 1px solid #3d4453;
-      background: #101520;
-      color: var(--text);
       border-radius: 10px;
+      border: 1px solid #3c4558;
+      background: #101522;
+      color: var(--text);
       padding: .72rem;
       margin-bottom: .68rem;
     }
 
     footer {
       margin-top: 1.5rem;
-      text-align: center;
       border-top: 1px solid var(--line);
       color: var(--muted);
-      padding: 1.45rem 0 1.8rem;
+      text-align: center;
+      padding: 1.45rem 0 1.85rem;
     }
 
-    @media (max-width: 980px) {
-      .hero, .pay-grid, .contact, .portfolio-grid { grid-template-columns: 1fr; }
+    @media (max-width: 1080px) {
+      .hero, .offer-infos, .pay-grid, .contact { grid-template-columns: 1fr; }
+      .process-grid { grid-template-columns: repeat(2, 1fr); }
       nav ul { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .process-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -198,46 +281,46 @@
         <ul>
           <li><a href="#services">Services</a></li>
           <li><a href="#bannieres">Bannières</a></li>
-          <li><a href="#portfolio">Portfolio</a></li>
-          <li><a href="#formations">Formations</a></li>
+          <li><a href="#process">Process</a></li>
+          <li><a href="#formation">Formation</a></li>
           <li><a href="#paiement">Paiement</a></li>
           <li><a href="#contact">Contact</a></li>
         </ul>
       </nav>
-      <a class="btn btn-primary" href="#contact">Réserver un call</a>
+      <a class="btn btn-primary" href="#contact">Prendre rendez-vous</a>
     </div>
   </header>
 
   <main class="container">
     <section class="hero">
       <div>
-        <h1>Identité visuelle <span class="grad">haut niveau</span> pour créateurs & marques.</h1>
-        <p class="subtitle">Bienvenue sur <strong>HeavenGraphX</strong>, studio spécialisé en bannières, logos et direction artistique. Site plus complet, plus professionnel et orienté conversion.</p>
+        <h1>Le studio <span class="grad">HeavenGraphX</span> pour des visuels qui marquent.</h1>
+        <p class="subtitle">Bannières, logos et direction artistique premium pour créateurs, streamers et marques digitales. Une image forte, cohérente et vraiment professionnelle.</p>
         <div class="hero-actions">
-          <a class="btn btn-primary" href="#services">Voir les offres</a>
-          <a class="btn btn-dark" href="#portfolio">Voir le portfolio</a>
+          <a class="btn btn-primary" href="#services">Voir les services</a>
+          <a class="btn btn-ghost" href="#formation">Voir la formation complète</a>
         </div>
-        <div class="stats">
-          <span class="pill">+120 projets</span>
-          <span class="pill">Design premium</span>
-          <span class="pill">Livraison rapide</span>
+        <div class="pill-row">
+          <span class="pill">+120 projets livrés</span>
+          <span class="pill">Branding premium</span>
+          <span class="pill">Accompagnement créatif</span>
         </div>
       </div>
-      <div class="hero-card">
+      <div class="hero-showcase">
         <img src="assets/banners/banner-verte.svg" alt="Aperçu bannière HeavenGraphX" />
       </div>
     </section>
 
     <section id="services">
-      <h2 class="section-title">Services graphisme</h2>
-      <p class="section-sub">Prix revus à la baisse uniquement sur les bannières et logos (comme demandé).</p>
+      <h2 class="section-title">Services du studio</h2>
+      <p class="section-sub">Offres créées pour booster ton image. Prix réduits uniquement sur bannière + logo, comme demandé.</p>
       <div class="grid">
         <article class="card">
           <span class="tag">Best Seller</span>
           <h3>Bannière Réseaux Pro</h3>
           <ul class="service-list">
-            <li>YouTube, Twitch, Facebook, X</li>
-            <li>2 directions créatives</li>
+            <li>YouTube / Twitch / Facebook / X</li>
+            <li>2 propositions complètes</li>
             <li>Retouches incluses</li>
           </ul>
           <div class="old-price">Avant 59€</div>
@@ -246,12 +329,12 @@
         </article>
 
         <article class="card">
-          <span class="tag">Branding</span>
+          <span class="tag">Brand Identity</span>
           <h3>Logo Professionnel</h3>
           <ul class="service-list">
-            <li>Concept original</li>
+            <li>Concept personnalisé</li>
             <li>Version claire + sombre</li>
-            <li>Fichiers HD + vectoriels</li>
+            <li>Fichiers HD et vectoriels</li>
           </ul>
           <div class="old-price">Avant 99€</div>
           <p class="price">27€</p>
@@ -262,11 +345,10 @@
           <span class="tag">Direction artistique</span>
           <h3>Pack Bannière + Logo</h3>
           <ul class="service-list">
-            <li>Cohérence complète de marque</li>
-            <li>Priorité sur livraison</li>
-            <li>Accompagnement créatif</li>
+            <li>Direction visuelle complète</li>
+            <li>Cohérence branding multi-plateformes</li>
+            <li>Priorité de livraison</li>
           </ul>
-          <div class="old-price">Avant 149€</div>
           <p class="price">39€</p>
           <a class="btn btn-primary" href="#contact">Demander un devis</a>
         </article>
@@ -275,78 +357,85 @@
 
     <section id="bannieres">
       <h2 class="section-title">Bannières d'exemple</h2>
-      <p class="section-sub">Les 3 visuels d’exemple sont affichés ci-dessous en grand format.</p>
+      <p class="section-sub">Tes visuels sont mis en avant en grand format pour une présentation plus pro.</p>
       <div class="banner-grid">
         <article class="banner-item">
-          <img src="assets/banners/banner-verte.svg" alt="Bannière exemple style vert" />
-          <p class="banner-caption">Exemple vert — ambiance énergique et contrastée.</p>
+          <img src="assets/banners/banner-verte.svg" alt="Bannière exemple verte" />
+          <p class="banner-caption">Style vert énergique — impact visuel fort.</p>
         </article>
         <article class="banner-item">
-          <img src="assets/banners/banner-bleu.svg" alt="Bannière exemple style bleu" />
-          <p class="banner-caption">Exemple bleu — look impact fort gaming/créateur.</p>
+          <img src="assets/banners/banner-bleu.svg" alt="Bannière exemple bleue" />
+          <p class="banner-caption">Style bleu cinématique — rendu gaming premium.</p>
         </article>
         <article class="banner-item">
-          <img src="assets/banners/banner-jaune.svg" alt="Bannière exemple style jaune" />
-          <p class="banner-caption">Exemple jaune — identité premium lumineuse.</p>
+          <img src="assets/banners/banner-jaune.svg" alt="Bannière exemple jaune" />
+          <p class="banner-caption">Style jaune signature — identité HeavenGraphX.</p>
         </article>
       </div>
     </section>
 
-    <section id="portfolio">
-      <h2 class="section-title">Portfolio HeavenGraphX</h2>
-      <p class="section-sub">Quelques axes de travail pour montrer la polyvalence du studio.</p>
-      <div class="portfolio-grid">
-        <article class="card portfolio-card"><h3>Gaming / Esport</h3><p>Bannières cinématiques, effets glow, lisibilité forte en miniature.</p></article>
-        <article class="card portfolio-card"><h3>Personal Branding</h3><p>Logos mémorables, palettes cohérentes et déclinaisons social media.</p></article>
-        <article class="card portfolio-card"><h3>YouTube Branding</h3><p>Header + avatar + mini templates pour créer une identité reconnaissable.</p></article>
-        <article class="card portfolio-card"><h3>Marques digitales</h3><p>Direction artistique complète pour lancement d’offre en ligne.</p></article>
+    <section id="process">
+      <h2 class="section-title">Méthode de travail HeavenGraphX</h2>
+      <p class="section-sub">Un process clair pour livrer un résultat premium et cohérent.</p>
+      <div class="process-grid">
+        <article class="card"><p class="step-num">01</p><h3>Brief créatif</h3><p>Objectifs, cible, style, références et contraintes techniques.</p></article>
+        <article class="card"><p class="step-num">02</p><h3>Direction visuelle</h3><p>Recherche graphique, palette, compositing et hiérarchie visuelle.</p></article>
+        <article class="card"><p class="step-num">03</p><h3>Affinage</h3><p>Retouches de détails, lisibilité, équilibre global et cohérence branding.</p></article>
+        <article class="card"><p class="step-num">04</p><h3>Livraison</h3><p>Export HD, formats réseaux et fichiers prêts à publier.</p></article>
       </div>
     </section>
 
-    <section id="formations">
-      <h2 class="section-title">Formations design</h2>
-      <p class="section-sub">Section dédiée à la vente de formations (ajoutée et détaillée).</p>
-      <div class="grid">
-        <article class="card">
-          <span class="tag">Formation</span>
-          <h3>Créer une bannière qui convertit</h3>
-          <p>Hiérarchie, typographie, effets, workflow complet sur Photoshop.</p>
-          <p class="price">49€</p>
-          <a class="btn btn-dark" href="#contact">S'inscrire</a>
-        </article>
-        <article class="card">
-          <span class="tag">Formation</span>
-          <h3>Logo pro de A à Z</h3>
-          <p>Brief client, croquis, vectorisation, présentation premium.</p>
-          <p class="price">69€</p>
-          <a class="btn btn-dark" href="#contact">S'inscrire</a>
-        </article>
-        <article class="card">
-          <span class="tag">Coaching</span>
-          <h3>Mentorat design 4 semaines</h3>
-          <p>Suivi perso, retours hebdo, progression rapide sur tes créations.</p>
-          <p class="price">120€</p>
-          <a class="btn btn-dark" href="#contact">Réserver</a>
-        </article>
+    <section id="formation">
+      <h2 class="section-title">Formation complète HeavenGraphX (pack unique)</h2>
+      <p class="section-sub">Un seul pack pour apprendre bannière + logo avec bonus inclus.</p>
+      <div class="offer-wrap">
+        <div class="offer-infos">
+          <article class="card">
+            <span class="tag">PACK FORMATION UNIQUE</span>
+            <h3>Masterclass Design Creator</h3>
+            <p>Tu apprends en une seule formation:</p>
+            <ul class="service-list">
+              <li>Création de bannières premium (compo, effets, profondeur)</li>
+              <li>Création de logos pros (du brief au rendu final)</li>
+              <li>Méthode pro de présentation client</li>
+              <li>Workflow rapide et rentable</li>
+            </ul>
+            <p class="price">149€</p>
+            <a class="btn btn-primary" href="#contact">Rejoindre la formation</a>
+          </article>
+
+          <article class="card">
+            <h3>Bonus offerts dans le pack</h3>
+            <ul class="bonus-list">
+              <li>✅ Photoshop offert (guides + setup complet)</li>
+              <li>✅ Cinema 4D offert (prise en main + preset de base)</li>
+              <li>✅ Plugins et ressources premium</li>
+              <li>✅ Packs mockups + textures + polices</li>
+              <li>✅ Support privé pour progresser rapidement</li>
+            </ul>
+            <p class="section-sub" style="margin-top: .9rem;">Objectif: te rendre autonome pour produire des visuels niveau pro.</p>
+          </article>
+        </div>
       </div>
     </section>
 
     <section id="paiement">
       <h2 class="section-title">Paiement sécurisé Stripe</h2>
-      <p class="section-sub">Tous les moyens de paiement pris en charge via Stripe.</p>
+      <p class="section-sub">Tous les types de paiement compatibles pour tes commandes et la formation.</p>
       <div class="pay-grid">
         <article class="card">
-          <h3>Moyens disponibles</h3>
+          <h3>Moyens de paiement</h3>
           <ul class="pay-list">
             <li>Visa, Mastercard, American Express</li>
-            <li>Apple Pay & Google Pay</li>
-            <li>SEPA / virement (selon pays)</li>
+            <li>Apple Pay / Google Pay</li>
+            <li>SEPA / virement bancaire (selon pays)</li>
             <li>Cartes prépayées compatibles</li>
           </ul>
         </article>
         <article class="card">
           <h3>Sécurité</h3>
-          <p>Transactions chiffrées, paiement hébergé, conformité PCI-DSS via Stripe.</p>
+          <p>Paiement chiffré, protocole sécurisé, conformité PCI-DSS via Stripe.</p>
+          <p class="section-sub">Tu peux commander en toute confiance.</p>
         </article>
       </div>
     </section>
@@ -355,20 +444,20 @@
       <h2 class="section-title">Contact & devis</h2>
       <div class="contact">
         <article class="card">
-          <h3>Lançons ton projet</h3>
-          <p>Décris ton style, tes références, ta deadline et ton budget cible.</p>
+          <h3>Parlons de ton projet</h3>
+          <p>Décris ton univers, ton style et ta deadline. Je te propose une direction visuelle premium adaptée à ton image.</p>
           <p>Email: hello@heavengraphx.com<br />WhatsApp: +33 6 00 00 00 00<br />Instagram: @heavengraphx</p>
         </article>
         <form>
           <input type="text" placeholder="Nom" required />
           <input type="email" placeholder="Email" required />
-          <textarea rows="5" placeholder="Ton projet..."></textarea>
+          <textarea rows="5" placeholder="Ton projet, ton budget, ta deadline..."></textarea>
           <button class="btn btn-primary" type="submit">Envoyer</button>
         </form>
       </div>
     </section>
   </main>
 
-  <footer>© 2026 HeavenGraphX — Graphiste bannières, logos & formations.</footer>
+  <footer>© 2026 HeavenGraphX — Studio graphisme bannières, logos & formation.</footer>
 </body>
 </html>
