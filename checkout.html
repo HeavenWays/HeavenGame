@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heaven Studio — Paiement</title>
+  <style>
+    :root {
+      --bg: #101216;
+      --card: #1b1f28;
+      --line: #343a48;
+      --text: #fcf4dc;
+      --muted: #d6c89b;
+      --yellow: #f7c948;
+      --yellow-2: #ffe08b;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(247, 201, 72, .23), transparent 30%),
+        linear-gradient(180deg, #141820 0%, #0f1218 100%);
+    }
+
+    .container { width: min(840px, 92vw); margin: 0 auto; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: rgba(16, 18, 22, .86);
+      backdrop-filter: blur(8px);
+    }
+
+    .head {
+      padding: 1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .7rem;
+    }
+
+    .logo { font-weight: 900; }
+    .logo span { color: var(--yellow); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      padding: .72rem 1rem;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #1b1300;
+      background: linear-gradient(135deg, var(--yellow), var(--yellow-2));
+    }
+
+    .btn-dark {
+      color: var(--yellow-2);
+      background: rgba(255, 224, 139, .08);
+      border: 1px solid rgba(255, 224, 139, .35);
+    }
+
+    main { padding: 2rem 0 2.5rem; }
+
+    .checkout {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 1rem;
+    }
+
+    .card {
+      background: linear-gradient(165deg, #202532, #171b25);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1rem;
+    }
+
+    .muted { color: var(--muted); }
+
+    label { display: block; margin-bottom: .28rem; font-weight: 650; }
+
+    input, select {
+      width: 100%;
+      border: 1px solid #3b4354;
+      background: #101520;
+      color: var(--text);
+      border-radius: 10px;
+      padding: .7rem;
+      margin-bottom: .65rem;
+    }
+
+    .methods {
+      display: grid;
+      gap: .55rem;
+      margin-top: .6rem;
+    }
+
+    .method {
+      border: 1px solid #41495b;
+      border-radius: 12px;
+      padding: .6rem .75rem;
+      background: rgba(255, 255, 255, .02);
+      font-size: .93rem;
+    }
+
+    .price {
+      font-size: 1.9rem;
+      font-weight: 900;
+      color: var(--yellow-2);
+      margin: .3rem 0 .5rem;
+    }
+
+    .ok {
+      margin-top: .7rem;
+      font-size: .9rem;
+      color: #a3efb2;
+      min-height: 1.1rem;
+    }
+
+    @media (max-width: 820px) {
+      .checkout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container head">
+      <div class="logo">Heaven<span>Studio</span> — Paiement</div>
+      <a class="btn btn-dark" href="index.html">← Retour au site</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Finaliser ta commande</h1>
+    <p class="muted">Tu as maintenant une vraie page de paiement qui s’ouvre quand tu cliques sur Commander.</p>
+
+    <div class="checkout">
+      <section class="card">
+        <h2>Informations client</h2>
+        <form id="pay-form">
+          <label for="fullname">Nom complet</label>
+          <input id="fullname" type="text" placeholder="Ex: Kevin Dupont" required />
+
+          <label for="email">Email</label>
+          <input id="email" type="email" placeholder="Ex: toi@email.com" required />
+
+          <label for="offer">Offre</label>
+          <select id="offer" required>
+            <option value="banniere" data-price="19">Bannière Réseaux — 19€</option>
+            <option value="logo" data-price="29">Logo Professionnel — 29€</option>
+            <option value="pack" data-price="39">Pack Bannière + Logo — 39€</option>
+          </select>
+
+          <label for="payment">Méthode de paiement</label>
+          <select id="payment" required>
+            <option>Carte bancaire</option>
+            <option>PayPal</option>
+            <option>Apple Pay / Google Pay</option>
+            <option>Virement bancaire</option>
+          </select>
+
+          <button class="btn btn-primary" type="submit">Payer maintenant</button>
+          <div class="ok" id="ok-message"></div>
+        </form>
+      </section>
+
+      <aside class="card">
+        <h3>Résumé commande</h3>
+        <p class="muted">Offre sélectionnée :</p>
+        <div id="offer-name">Bannière Réseaux</div>
+        <div class="price" id="offer-price">19€</div>
+
+        <div class="methods">
+          <div class="method">✅ Paiement carte (Visa, Mastercard, Amex)</div>
+          <div class="method">✅ PayPal</div>
+          <div class="method">✅ Apple Pay / Google Pay</div>
+          <div class="method">✅ Virement / SEPA</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <script>
+    const offers = {
+      banniere: { label: 'Bannière Réseaux', price: 19 },
+      logo: { label: 'Logo Professionnel', price: 29 },
+      pack: { label: 'Pack Bannière + Logo', price: 39 }
+    };
+
+    const params = new URLSearchParams(window.location.search);
+    const offerParam = params.get('offer');
+    const offerSelect = document.getElementById('offer');
+    const offerName = document.getElementById('offer-name');
+    const offerPrice = document.getElementById('offer-price');
+    const okMessage = document.getElementById('ok-message');
+
+    if (offerParam && offers[offerParam]) {
+      offerSelect.value = offerParam;
+    }
+
+    function refreshSummary() {
+      const key = offerSelect.value;
+      const selected = offers[key];
+      offerName.textContent = selected.label;
+      offerPrice.textContent = selected.price + '€';
+    }
+
+    offerSelect.addEventListener('change', refreshSummary);
+    refreshSummary();
+
+    document.getElementById('pay-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+      okMessage.textContent = 'Paiement simulé réussi ✅ (on peut connecter Stripe/PayPal en backend ensuite).';
+    });
+  </script>
+</body>
+</html>
