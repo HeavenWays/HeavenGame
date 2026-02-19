@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heaven Studio — Checkout Stripe</title>
+  <style>
+    :root{--bg:#101217;--card:#1a1f29;--line:#353c4d;--text:#fcf4dc;--muted:#d4c89f;--y:#f7c948;--y2:#ffe08b}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 0% 0%,rgba(247,201,72,.22),transparent 35%),linear-gradient(180deg,#151922,#0f1218)}
+    .container{width:min(900px,92vw);margin:0 auto} header{border-bottom:1px solid var(--line);background:rgba(16,18,23,.85)}
+    .head{display:flex;justify-content:space-between;align-items:center;padding:.9rem 0;gap:.7rem}.logo{font-weight:900}.logo span{color:var(--y)}
+    .btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border-radius:12px;font-weight:800;padding:.72rem 1rem;border:0;cursor:pointer}
+    .btn-primary{color:#1f1400;background:linear-gradient(135deg,var(--y),var(--y2))}.btn-dark{color:var(--y2);border:1px solid rgba(255,224,139,.45);background:rgba(255,224,139,.08)}
+    main{padding:2rem 0}.checkout{display:grid;grid-template-columns:1.05fr .95fr;gap:1rem}.card{background:linear-gradient(165deg,#202532,#161b25);border:1px solid var(--line);border-radius:16px;padding:1rem}
+    .muted{color:var(--muted)} label{display:block;font-weight:650;margin-bottom:.3rem} input,select{width:100%;padding:.7rem;border-radius:10px;border:1px solid #3b4456;background:#111622;color:var(--text);margin-bottom:.65rem}
+    .price{font-size:1.85rem;font-weight:900;color:var(--y2);margin:.3rem 0 .5rem} .state{margin-top:.7rem;min-height:1.2rem;font-size:.9rem}
+    .ok{color:#95ecab}.err{color:#ff9b9b}
+    @media (max-width:830px){.checkout{grid-template-columns:1fr}}
+  </style>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+  <header><div class="container head"><div class="logo">Heaven<span>Studio</span> — Stripe Checkout</div><a class="btn btn-dark" href="index.html">← Retour</a></div></header>
+  <main class="container">
+    <h1>Payer ta commande</h1>
+    <p class="muted">Paiement réel Stripe (pas une simulation) si les clés sont configurées sur le serveur.</p>
+    <div class="checkout">
+      <section class="card">
+        <form id="pay-form">
+          <label for="fullname">Nom complet</label>
+          <input id="fullname" required placeholder="Ex: Kevin Dupont" />
+          <label for="email">Email</label>
+          <input id="email" type="email" required placeholder="Ex: toi@email.com" />
+          <label for="offer">Offre</label>
+          <select id="offer">
+            <option value="banniere">Bannière Réseaux — 19€</option>
+            <option value="logo">Logo Professionnel — 29€</option>
+            <option value="pack">Pack Bannière + Logo — 39€</option>
+          </select>
+          <button class="btn btn-primary" type="submit">Aller au paiement Stripe</button>
+          <div class="state" id="state"></div>
+        </form>
+      </section>
+      <aside class="card">
+        <h3>Résumé</h3>
+        <p class="muted">Offre:</p>
+        <div id="offer-name">Bannière Réseaux</div>
+        <div class="price" id="offer-price">19€</div>
+        <p class="muted">Le paiement est traité par Stripe Checkout en HTTPS sécurisé.</p>
+      </aside>
+    </div>
+  </main>
+  <script>
+    const offers={banniere:{label:'Bannière Réseaux',price:19},logo:{label:'Logo Professionnel',price:29},pack:{label:'Pack Bannière + Logo',price:39}};
+    const params=new URLSearchParams(location.search);const offerParam=params.get('offer');
+    const offerSelect=document.getElementById('offer');const offerName=document.getElementById('offer-name');const offerPrice=document.getElementById('offer-price');const state=document.getElementById('state');
+    if(offerParam&&offers[offerParam]) offerSelect.value=offerParam;
+    function refresh(){const v=offerSelect.value;offerName.textContent=offers[v].label;offerPrice.textContent=offers[v].price+'€';}
+    offerSelect.addEventListener('change',refresh);refresh();
+
+    async function parseApiResponse(res){
+      const raw = await res.text();
+      if(!raw){
+        return { ok: res.ok, data: {}, error: 'Réponse vide du serveur. Lance le site avec: python3 server.py' };
+      }
+      try {
+        const data = JSON.parse(raw);
+        return { ok: res.ok, data, error: data.error || null };
+      } catch(_){
+        return { ok: res.ok, data: {}, error: 'Réponse non-JSON. Vérifie que tu utilises python3 server.py (pas python3 -m http.server).' };
+      }
+    }
+
+    document.getElementById('pay-form').addEventListener('submit',async (e)=>{
+      e.preventDefault();
+      state.className='state'; state.textContent='Création de la session Stripe...';
+      try {
+        const res=await fetch('/api/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({offer:offerSelect.value,email:document.getElementById('email').value,name:document.getElementById('fullname').value})});
+        const parsed = await parseApiResponse(res);
+        if(!parsed.ok){
+          throw new Error(parsed.error || 'Erreur Stripe');
+        }
+        const data = parsed.data;
+        if(data.url){window.location.href=data.url;return;}
+        if(data.sessionId&&data.publishableKey){
+          const stripe=Stripe(data.publishableKey);
+          const result=await stripe.redirectToCheckout({sessionId:data.sessionId});
+          if(result.error) throw new Error(result.error.message);
+          return;
+        }
+        throw new Error('Réponse Stripe invalide');
+      } catch(err){
+        state.className='state err';
+        state.textContent='Erreur: '+err.message;
+      }
+    });
+  </script>
+</body>
+</html>
