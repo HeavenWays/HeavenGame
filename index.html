@@ -65,7 +65,7 @@
 
     .banner-grid { display:grid; grid-template-columns:1fr; gap:1rem; }
     .banner-item { border:1px solid #4e3f14; border-radius:16px; overflow:hidden; background:#111; }
-    .banner-item img { width:100%; display:block; aspect-ratio: 21 / 9; object-fit: cover; }
+    .banner-item img, .banner-item svg { width:100%; display:block; aspect-ratio: 21 / 9; object-fit: cover; }
     .banner-caption { padding:.7rem .9rem; color:#e7dcae; font-size:.92rem; }
 
     .payment-wrap { display:grid; grid-template-columns: 1.1fr .9fr; gap:1rem; }
@@ -139,19 +139,37 @@
     </section>
 
     <section id="bannieres">
-      <h2 class="section-title">Bannières (tes visuels ajoutés)</h2>
-      <p class="section-sub">J’ai préparé une vraie section bannière avec tes créations en grand format.</p>
+      <h2 class="section-title">Bannières (aperçu intégré)</h2>
+      <p class="section-sub">Les visuels sont intégrés directement dans la page pour que le site marche avec un seul fichier.</p>
       <div class="banner-grid">
         <article class="banner-item">
-          <img src="assets/banners/banner-jaune.svg" alt="Bannière anime jaune" />
+          <svg viewBox="0 0 1200 450" role="img" aria-label="Bannière style jaune premium">
+            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#3f2a00"/><stop offset="55%" stop-color="#f4c233"/><stop offset="100%" stop-color="#fff0b3"/></linearGradient></defs>
+            <rect width="1200" height="450" fill="url(#g1)"/>
+            <circle cx="980" cy="120" r="120" fill="rgba(255,255,255,.2)"/>
+            <text x="80" y="220" fill="#1f1500" font-size="64" font-family="Arial" font-weight="700">HEAVEN STUDIO</text>
+            <text x="80" y="290" fill="#2a1c00" font-size="34" font-family="Arial">Bannière Premium • Petit Prix</text>
+          </svg>
           <div class="banner-caption">Bannière style jaune/or — effet premium et cinématique.</div>
         </article>
         <article class="banner-item">
-          <img src="assets/banners/banner-bleu.svg" alt="Bannière anime bleue" />
+          <svg viewBox="0 0 1200 450" role="img" aria-label="Bannière style bleu impact">
+            <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#031d3d"/><stop offset="50%" stop-color="#156ccf"/><stop offset="100%" stop-color="#8bc4ff"/></linearGradient></defs>
+            <rect width="1200" height="450" fill="url(#g2)"/>
+            <rect x="840" y="70" width="280" height="280" rx="28" fill="rgba(255,255,255,.12)"/>
+            <text x="80" y="220" fill="#e8f4ff" font-size="64" font-family="Arial" font-weight="700">BANNIÈRE GAMING</text>
+            <text x="80" y="290" fill="#d0e9ff" font-size="34" font-family="Arial">Impact visuel fort pour tes réseaux</text>
+          </svg>
           <div class="banner-caption">Bannière style bleu — impact visuel fort pour gaming/social.</div>
         </article>
         <article class="banner-item">
-          <img src="assets/banners/banner-verte.svg" alt="Bannière anime verte" />
+          <svg viewBox="0 0 1200 450" role="img" aria-label="Bannière style vert moderne">
+            <defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#05351f"/><stop offset="52%" stop-color="#1fbf78"/><stop offset="100%" stop-color="#9df0ca"/></linearGradient></defs>
+            <rect width="1200" height="450" fill="url(#g3)"/>
+            <circle cx="1040" cy="330" r="150" fill="rgba(255,255,255,.1)"/>
+            <text x="80" y="220" fill="#effff6" font-size="64" font-family="Arial" font-weight="700">SOCIAL BANNER</text>
+            <text x="80" y="290" fill="#d4ffe8" font-size="34" font-family="Arial">Ambiance énergique, glow moderne</text>
+          </svg>
           <div class="banner-caption">Bannière style vert — ambiance énergique, glow moderne.</div>
         </article>
       </div>
@@ -184,17 +202,17 @@
 
     <section id="tester">
       <h2 class="section-title">Tester le site maintenant (sans galère)</h2>
-      <p class="section-sub">Tu n'as rien à installer. Ouvre juste le dossier du site et double-clique sur <strong>index.html</strong>.</p>
+      <p class="section-sub">Tu peux tester avec un seul fichier: <strong>index.html</strong>. Pas besoin d'installation.</p>
       <div class="grid">
         <article class="card">
           <span class="tag">Étape 1</span>
-          <h3>Récupère le dossier complet</h3>
-          <p>Il faut garder <strong>index.html</strong> + le dossier <strong>assets/</strong> ensemble au même endroit.</p>
+          <h3>Télécharge seulement index.html</h3>
+          <p>Dans la liste des fichiers, clique sur <strong>index.html</strong> puis sur <strong>Download raw file</strong>.</p>
         </article>
         <article class="card">
           <span class="tag">Étape 2</span>
-          <h3>Ouvre directement le site</h3>
-          <p>Double-clique sur <strong>index.html</strong>. Le site s'ouvre tout de suite dans ton navigateur.</p>
+          <h3>Ouvre le fichier</h3>
+          <p>Une fois téléchargé, double-clique sur <strong>index.html</strong>. Le site s'affiche immédiatement.</p>
         </article>
         <article class="card">
           <span class="tag">Étape 3</span>
