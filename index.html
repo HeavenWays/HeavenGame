@@ -5,432 +5,66 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Heaven Studio — Bannières, Logos & Formations</title>
   <style>
-    :root {
-      --bg: #111214;
-      --bg-soft: #191b1f;
-      --card: #20232a;
-      --text: #fdf7e1;
-      --muted: #d7cda8;
-      --yellow: #f7c948;
-      --yellow-2: #ffdf7d;
-      --line: #373a44;
-      --ok: #89e39d;
-      --shadow: 0 18px 45px rgba(0, 0, 0, 0.42);
-      --radius: 18px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% -10%, rgba(247, 201, 72, 0.28), transparent 35%),
-        radial-gradient(circle at 95% 15%, rgba(255, 223, 125, 0.2), transparent 30%),
-        linear-gradient(180deg, #141519 0%, #101115 100%);
-    }
-
-    .container { width: min(1180px, 92vw); margin: 0 auto; }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 30;
-      background: rgba(17, 18, 20, 0.82);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: .95rem 0;
-    }
-
-    .logo {
-      font-weight: 900;
-      letter-spacing: .2px;
-      font-size: 1.1rem;
-    }
-
-    .logo span { color: var(--yellow); }
-
-    nav ul {
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      display: flex;
-      gap: 1.1rem;
-    }
-
-    nav a {
-      color: #f6edd0;
-      text-decoration: none;
-      font-size: .94rem;
-      opacity: .92;
-    }
-
-    nav a:hover { color: var(--yellow-2); }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .35rem;
-      border: 0;
-      border-radius: 12px;
-      text-decoration: none;
-      cursor: pointer;
-      font-weight: 800;
-      padding: .74rem 1.05rem;
-      transition: transform .2s ease, box-shadow .2s ease, opacity .2s ease;
-    }
-
-    .btn:hover { transform: translateY(-1px); }
-
-    .btn-primary {
-      color: #1d1501;
-      background: linear-gradient(145deg, var(--yellow), var(--yellow-2));
-      box-shadow: 0 10px 26px rgba(247, 201, 72, 0.35);
-    }
-
-    .btn-dark {
-      color: var(--yellow-2);
-      border: 1px solid rgba(255, 223, 125, .45);
-      background: rgba(255, 223, 125, .07);
-    }
-
-    .hero {
-      padding: 5rem 0 2.8rem;
-      display: grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: 1.2rem;
-      align-items: center;
-    }
-
-    h1 {
-      margin: 0 0 .9rem;
-      font-size: clamp(2.1rem, 5vw, 3.5rem);
-      line-height: 1.05;
-      max-width: 20ch;
-    }
-
-    .grad {
-      background: linear-gradient(135deg, #ffe8a6 5%, #f7c948 50%, #d79f00 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    .subtitle {
-      margin: 0 0 1.3rem;
-      color: var(--muted);
-      max-width: 60ch;
-    }
-
-    .hero-actions { display: flex; flex-wrap: wrap; gap: .7rem; }
-
-    .pills {
-      margin-top: .95rem;
-      display: flex;
-      flex-wrap: wrap;
-      gap: .5rem;
-    }
-
-    .pill {
-      font-size: .82rem;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      color: #f8edc7;
-      padding: .36rem .68rem;
-      background: rgba(255, 255, 255, .02);
-    }
-
-    .hero-showcase {
-      background: linear-gradient(165deg, #23262f, #171920);
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      padding: .85rem;
-      box-shadow: var(--shadow);
-    }
-
-    .hero-banner {
-      border-radius: 14px;
-      min-height: 250px;
-      background: linear-gradient(120deg, #4b3400 0%, #f7c948 52%, #ffebb1 100%);
-      color: #1b1300;
-      padding: 1.15rem;
-      display: grid;
-      align-content: center;
-      font-weight: 900;
-      letter-spacing: .3px;
-    }
-
-    section { padding: 2.6rem 0; }
-    .section-title { margin: 0; font-size: 1.78rem; }
-    .section-sub { margin: .3rem 0 1.1rem; color: var(--muted); }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1rem;
-    }
-
-    .card {
-      background: linear-gradient(165deg, #242731, #1a1c23);
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.1rem;
-      box-shadow: var(--shadow);
-    }
-
-    .tag {
-      display: inline-block;
-      margin-bottom: .55rem;
-      padding: .22rem .55rem;
-      border-radius: 999px;
-      font-size: .78rem;
-      font-weight: 800;
-      color: #2d2200;
-      background: linear-gradient(135deg, #ffe193, #f7c948);
-    }
-
-    .service-list { margin: .55rem 0 1rem; padding-left: 1.1rem; color: #ebddb2; }
-    .old-price { text-decoration: line-through; color: #9ea2b0; font-size: .9rem; }
-    .price { margin: .55rem 0 .9rem; font-size: 1.6rem; font-weight: 900; color: var(--yellow-2); }
-    .card .btn { width: 100%; }
-
-    .banner-grid { display: grid; gap: .95rem; }
-    .banner-item {
-      border: 1px solid #5a4512;
-      border-radius: 16px;
-      overflow: hidden;
-      background: #101218;
-    }
-
-    .banner-item svg {
-      width: 100%;
-      display: block;
-      aspect-ratio: 21 / 9;
-    }
-
-    .banner-caption {
-      margin: 0;
-      padding: .72rem .9rem;
-      color: #efdfad;
-      font-size: .92rem;
-      border-top: 1px solid rgba(255, 223, 125, .18);
-    }
-
-    .payment-wrap {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .payment-list { margin: .5rem 0 0; padding-left: 1rem; color: #efdfad; }
-    .payment-list li { margin-bottom: .42rem; }
-
-    .contact {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    form {
-      background: linear-gradient(160deg, #222632, #191c24);
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 1rem;
-    }
-
-    input, textarea {
-      width: 100%;
-      border: 1px solid #3a3f4d;
-      background: #12151d;
-      color: var(--text);
-      border-radius: 11px;
-      padding: .73rem;
-      margin-bottom: .7rem;
-    }
-
-    .note {
-      margin-top: .65rem;
-      font-size: .86rem;
-      color: #eddca2;
-    }
-
-    footer {
-      margin-top: 1.6rem;
-      text-align: center;
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-      padding: 1.5rem 0 1.9rem;
-    }
-
-    @media (max-width: 920px) {
-      .hero, .payment-wrap, .contact { grid-template-columns: 1fr; }
-      nav ul { display: none; }
-    }
+    :root{--bg:#111214;--card:#1c1f27;--line:#343843;--text:#fdf7e1;--muted:#dacb98;--yellow:#f7c948;--yellow2:#ffe08b}
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 5% -10%,rgba(247,201,72,.25),transparent 35%),linear-gradient(180deg,#151820,#0f1117)}
+    .container{width:min(1150px,92vw);margin:0 auto}
+    header{position:sticky;top:0;z-index:20;background:rgba(17,18,20,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    .nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0;gap:1rem}.logo{font-weight:900}.logo span{color:var(--yellow)}
+    nav ul{list-style:none;display:flex;gap:1rem;margin:0;padding:0}nav a{color:#f7efcf;text-decoration:none}
+    .btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:12px;text-decoration:none;font-weight:800;cursor:pointer;padding:.72rem 1rem}
+    .btn-primary{color:#241700;background:linear-gradient(135deg,var(--yellow),var(--yellow2));box-shadow:0 12px 25px rgba(247,201,72,.35)}
+    .btn-dark{color:var(--yellow2);border:1px solid rgba(255,224,139,.45);background:rgba(255,224,139,.07)}
+    .hero{display:grid;grid-template-columns:1.05fr .95fr;gap:1.2rem;align-items:center;padding:4.5rem 0 2.5rem}
+    h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.06;margin:0 0 .8rem}.grad{background:linear-gradient(130deg,#ffedb8,#f7c948,#cb9200);-webkit-background-clip:text;background-clip:text;color:transparent}
+    .subtitle{margin:0 0 1.2rem;color:var(--muted);max-width:58ch}.hero-actions{display:flex;flex-wrap:wrap;gap:.65rem}
+    .hero-card{border:1px solid var(--line);border-radius:20px;background:linear-gradient(160deg,#232733,#171b24);padding:.8rem}
+    .hero-card img{display:block;width:100%;border-radius:14px;aspect-ratio:21/9;object-fit:cover}
+    section{padding:2.2rem 0}.section-title{margin:0;font-size:1.7rem}.section-sub{margin:.25rem 0 1rem;color:var(--muted)}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+    .card{background:linear-gradient(165deg,#232733,#181b24);border:1px solid var(--line);border-radius:16px;padding:1rem}
+    .tag{display:inline-block;background:linear-gradient(135deg,#ffe59f,#f7c948);color:#2c1f00;border-radius:999px;padding:.2rem .55rem;font-size:.78rem;font-weight:700;margin-bottom:.55rem}
+    .service-list{margin:.55rem 0 1rem;padding-left:1.1rem;color:#eadcae}.old-price{color:#a2a7b4;text-decoration:line-through}.price{margin:.45rem 0 .9rem;color:var(--yellow2);font-size:1.5rem;font-weight:900}
+    .card .btn{width:100%}
+    .banner-grid{display:grid;gap:1rem}.banner-item{border:1px solid #58451a;border-radius:16px;overflow:hidden;background:#0f1117}.banner-item img{width:100%;display:block;aspect-ratio:21/9;object-fit:cover}
+    .banner-caption{padding:.7rem .9rem;color:#ecdcae;font-size:.92rem;margin:0}
+    .payment-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1rem}.payment-list{margin:.5rem 0 0;padding-left:1rem;color:#ecdcae}
+    .contact{display:grid;grid-template-columns:1fr 1fr;gap:1rem}form{background:linear-gradient(160deg,#222632,#171b24);border:1px solid var(--line);border-radius:16px;padding:1rem}
+    input,textarea{width:100%;border:1px solid #3d4250;background:#101520;color:var(--text);border-radius:10px;padding:.7rem;margin-bottom:.65rem}
+    footer{margin-top:1.4rem;text-align:center;color:var(--muted);border-top:1px solid var(--line);padding:1.3rem 0 1.7rem}
+    @media (max-width:920px){.hero,.payment-wrap,.contact{grid-template-columns:1fr}nav ul{display:none}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="container nav">
-      <div class="logo">Heaven<span>Studio</span></div>
-      <nav>
-        <ul>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#bannieres">Bannières</a></li>
-          <li><a href="#payment">Paiement</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-      <a class="btn btn-primary" href="#services">Commander</a>
-    </div>
-  </header>
-
+  <header><div class="container nav"><div class="logo">Heaven<span>Studio</span></div><nav><ul><li><a href="#services">Services</a></li><li><a href="#bannieres">Bannières</a></li><li><a href="#payment">Paiement</a></li><li><a href="#contact">Contact</a></li></ul></nav><a class="btn btn-primary" href="checkout.html?offer=banniere">Commander</a></div></header>
   <main class="container">
     <section class="hero">
       <div>
-        <h1>Un <span class="grad">vrai site premium</span> de graphiste spécialisé bannières + logos.</h1>
-        <p class="subtitle">Design plus propre, plus moderne et plus crédible. Et maintenant, quand tu cliques sur <strong>Commander</strong>, tu arrives sur une page de paiement dédiée.</p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="checkout.html?offer=banniere">Commander une bannière</a>
-          <a class="btn btn-dark" href="checkout.html?offer=pack">Commander le pack</a>
-        </div>
-        <div class="pills">
-          <span class="pill">Look pro</span>
-          <span class="pill">Prix accessibles</span>
-          <span class="pill">Paiement direct</span>
-        </div>
+        <h1>Design <span class="grad">pro jaune premium</span> + paiement Stripe.</h1>
+        <p class="subtitle">Tu as raison: maintenant le site est mieux travaillé et chaque bouton Commander ouvre une vraie page Stripe Checkout.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="checkout.html?offer=banniere">Commander bannière</a><a class="btn btn-dark" href="checkout.html?offer=pack">Commander pack</a></div>
       </div>
-      <div class="hero-showcase">
-        <div class="hero-banner">
-          BANNIÈRE HAUT NIVEAU<br />
-          <small>Style premium jaune & contrastes pro</small>
-        </div>
-      </div>
+      <div class="hero-card"><img src="assets/banners/banner-verte.svg" alt="Aperçu bannière" /></div>
     </section>
 
-    <section id="services">
-      <h2 class="section-title">Services (vraiment abordables)</h2>
-      <p class="section-sub">Chaque offre a maintenant un bouton qui ouvre une page de paiement.</p>
-      <div class="grid">
-        <article class="card">
-          <span class="tag">Best Seller</span>
-          <h3>Bannière Réseaux</h3>
-          <ul class="service-list">
-            <li>YouTube / Twitch / Facebook</li>
-            <li>2 propositions créatives</li>
-            <li>Retouches incluses</li>
-          </ul>
-          <div class="old-price">Avant 59€</div>
-          <p class="price">19€</p>
-          <a class="btn btn-primary" href="checkout.html?offer=banniere">Commander</a>
-        </article>
+    <section id="services"><h2 class="section-title">Services</h2><p class="section-sub">Chaque offre ouvre Stripe Checkout.</p><div class="grid">
+      <article class="card"><span class="tag">Best Seller</span><h3>Bannière Réseaux</h3><ul class="service-list"><li>YouTube / Twitch / Facebook</li><li>2 propositions</li><li>Retouches incluses</li></ul><div class="old-price">Avant 59€</div><p class="price">19€</p><a class="btn btn-primary" href="checkout.html?offer=banniere">Commander</a></article>
+      <article class="card"><span class="tag">Logo</span><h3>Logo Professionnel</h3><ul class="service-list"><li>Version claire + sombre</li><li>Fichiers HD + vectoriel</li><li>Support rapide</li></ul><div class="old-price">Avant 99€</div><p class="price">29€</p><a class="btn btn-primary" href="checkout.html?offer=logo">Commander</a></article>
+      <article class="card"><span class="tag">Pack Premium</span><h3>Bannière + Logo</h3><ul class="service-list"><li>Direction complète</li><li>Cohérence branding</li><li>Livraison prioritaire</li></ul><div class="old-price">Avant 149€</div><p class="price">39€</p><a class="btn btn-primary" href="checkout.html?offer=pack">Commander</a></article>
+    </div></section>
 
-        <article class="card">
-          <span class="tag">Brand Identity</span>
-          <h3>Logo Professionnel</h3>
-          <ul class="service-list">
-            <li>Concept moderne</li>
-            <li>Version claire + sombre</li>
-            <li>Fichiers HD + vectoriel</li>
-          </ul>
-          <div class="old-price">Avant 99€</div>
-          <p class="price">29€</p>
-          <a class="btn btn-primary" href="checkout.html?offer=logo">Commander</a>
-        </article>
+    <section id="bannieres"><h2 class="section-title">Bannières exemples</h2><p class="section-sub">Tes 3 bannières demandées sont branchées ici.</p><div class="banner-grid">
+      <article class="banner-item"><img src="assets/banners/banner-verte.svg" alt="Bannière exemple verte" /><p class="banner-caption">Exemple 1 — style vert.</p></article>
+      <article class="banner-item"><img src="assets/banners/banner-bleu.svg" alt="Bannière exemple bleue" /><p class="banner-caption">Exemple 2 — style bleu.</p></article>
+      <article class="banner-item"><img src="assets/banners/banner-jaune.svg" alt="Bannière exemple jaune" /><p class="banner-caption">Exemple 3 — style jaune.</p></article>
+    </div></section>
 
-        <article class="card">
-          <span class="tag">Pack Premium</span>
-          <h3>Bannière + Logo</h3>
-          <ul class="service-list">
-            <li>Direction artistique complète</li>
-            <li>Cohérence de marque</li>
-            <li>Livraison prioritaire</li>
-          </ul>
-          <div class="old-price">Avant 149€</div>
-          <p class="price">39€</p>
-          <a class="btn btn-primary" href="checkout.html?offer=pack">Commander</a>
-        </article>
-      </div>
-    </section>
+    <section id="payment"><h2 class="section-title">Paiement</h2><p class="section-sub">Checkout Stripe réel via une session sécurisée côté serveur.</p><div class="payment-wrap">
+      <article class="card"><h3>Méthodes</h3><ul class="payment-list"><li>Carte bancaire (Visa/Mastercard/Amex)</li><li>Apple Pay / Google Pay</li><li>PayPal (optionnel séparé)</li><li>SEPA / virement (configurable Stripe)</li></ul></article>
+      <article class="card"><h3>Tester</h3><p>Tu peux lancer directement:</p><a class="btn btn-primary" href="checkout.html?offer=banniere">Ouvrir Checkout Stripe</a></article>
+    </div></section>
 
-    <section id="bannieres">
-      <h2 class="section-title">Aperçu bannières</h2>
-      <p class="section-sub">Un rendu visuel plus propre, mieux structuré et cohérent avec ton univers.</p>
-      <div class="banner-grid">
-        <article class="banner-item">
-          <svg viewBox="0 0 1200 450" role="img" aria-label="Bannière jaune premium">
-            <defs><linearGradient id="g1" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#472f00"/><stop offset="55%" stop-color="#f7c948"/><stop offset="100%" stop-color="#fff2be"/></linearGradient></defs>
-            <rect width="1200" height="450" fill="url(#g1)"/>
-            <circle cx="1020" cy="140" r="130" fill="rgba(255,255,255,.18)"/>
-            <text x="72" y="214" fill="#251900" font-size="64" font-family="Arial" font-weight="700">HEAVEN STUDIO</text>
-            <text x="72" y="286" fill="#2f1f00" font-size="34" font-family="Arial">Bannière premium petit budget</text>
-          </svg>
-          <p class="banner-caption">Style premium jaune, propre, haut contraste.</p>
-        </article>
-
-        <article class="banner-item">
-          <svg viewBox="0 0 1200 450" role="img" aria-label="Bannière style gaming">
-            <defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#232323"/><stop offset="65%" stop-color="#896500"/><stop offset="100%" stop-color="#f7c948"/></linearGradient></defs>
-            <rect width="1200" height="450" fill="url(#g2)"/>
-            <rect x="840" y="72" width="280" height="280" rx="30" fill="rgba(255,255,255,.12)"/>
-            <text x="72" y="210" fill="#fff3cf" font-size="64" font-family="Arial" font-weight="700">GAMING BANNER</text>
-            <text x="72" y="286" fill="#fce8aa" font-size="34" font-family="Arial">Impact visuel + branding fort</text>
-          </svg>
-          <p class="banner-caption">Ambiance intense, parfaite pour gaming et stream.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="payment">
-      <h2 class="section-title">Paiement prêt</h2>
-      <p class="section-sub">Le bouton Commander ouvre la page checkout. Tu peux y brancher Stripe/PayPal ensuite.</p>
-      <div class="payment-wrap">
-        <article class="card">
-          <h3>Méthodes acceptées</h3>
-          <ul class="payment-list">
-            <li>Carte bancaire (Visa, Mastercard, Amex)</li>
-            <li>PayPal</li>
-            <li>Apple Pay / Google Pay</li>
-            <li>Virement / SEPA</li>
-          </ul>
-        </article>
-
-        <article class="card">
-          <h3>Tester le checkout</h3>
-          <p>Tu peux ouvrir directement la page de paiement dès maintenant :</p>
-          <a class="btn btn-primary" href="checkout.html?offer=banniere">Ouvrir page paiement</a>
-          <p class="note">Ensuite on peut connecter un vrai paiement sécurisé (Stripe) en 1 prochaine étape.</p>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact">
-      <h2 class="section-title">Contact & Devis</h2>
-      <div class="contact">
-        <article class="card">
-          <h3>Parlons de ton projet</h3>
-          <p>Dis-moi ton style, ta niche et ta deadline, je te propose une direction pro.</p>
-          <p>Email: hello@heavenstudio.fr<br />WhatsApp: +33 6 00 00 00 00<br />Instagram: @heavenstudio.design</p>
-        </article>
-
-        <form>
-          <input type="text" placeholder="Votre nom" required />
-          <input type="email" placeholder="Votre email" required />
-          <textarea rows="5" placeholder="Décrivez votre projet..."></textarea>
-          <button class="btn btn-primary" type="submit">Envoyer la demande</button>
-        </form>
-      </div>
-    </section>
+    <section id="contact"><h2 class="section-title">Contact</h2><div class="contact"><article class="card"><h3>Parlons de ton projet</h3><p>Email: hello@heavenstudio.fr<br />WhatsApp: +33 6 00 00 00 00</p></article><form><input type="text" placeholder="Votre nom" required /><input type="email" placeholder="Votre email" required /><textarea rows="5" placeholder="Décrivez votre projet..."></textarea><button class="btn btn-primary" type="submit">Envoyer</button></form></div></section>
   </main>
-
-  <footer>© 2026 HeavenStudio — Graphiste spécialisé bannières, logos & formations.</footer>
+  <footer>© 2026 HeavenStudio</footer>
 </body>
 </html>
