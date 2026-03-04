@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Heaven Voice - Modificateur de voix féminine</title>
+  <style>
+    :root {
+      --bg: #0b0a14;
+      --panel: #17162a;
+      --accent: #c084fc;
+      --accent-2: #22d3ee;
+      --text: #f5f3ff;
+      --muted: #b8b5d2;
+      --danger: #fb7185;
+      --ok: #34d399;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, Segoe UI, Roboto, sans-serif;
+      color: var(--text);
+      background: radial-gradient(circle at top, #1f1236, var(--bg) 45%);
+      display: grid;
+      place-items: center;
+      padding: 1rem;
+    }
+    .app {
+      width: min(980px, 100%);
+      background: rgba(23, 22, 42, 0.92);
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      border-radius: 20px;
+      box-shadow: 0 20px 70px rgba(0, 0, 0, 0.45);
+      overflow: hidden;
+    }
+    .header {
+      padding: 1.2rem 1.4rem;
+      background: linear-gradient(90deg, rgba(192, 132, 252, 0.14), rgba(34, 211, 238, 0.14));
+      border-bottom: 1px solid rgba(184, 181, 210, 0.2);
+    }
+    .header h1 { margin: 0; font-size: 1.35rem; }
+    .header p { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.95rem; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .card {
+      background: rgba(11, 10, 20, 0.65);
+      border: 1px solid rgba(184, 181, 210, 0.2);
+      border-radius: 14px;
+      padding: 1rem;
+    }
+    .card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.02rem;
+      color: var(--accent-2);
+    }
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 0.7rem;
+      margin-bottom: 0.9rem;
+    }
+    .row label { color: var(--muted); font-size: 0.9rem; }
+    input[type="range"], select {
+      width: 100%;
+      accent-color: var(--accent);
+      background: #090813;
+      color: var(--text);
+      border: 1px solid #343250;
+      border-radius: 8px;
+      padding: 0.4rem;
+    }
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 0.3rem;
+    }
+    button {
+      border: 1px solid rgba(192, 132, 252, 0.35);
+      background: #100f20;
+      color: var(--text);
+      padding: 0.62rem 0.9rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.2s;
+      font-weight: 600;
+    }
+    button:hover { transform: translateY(-1px); border-color: var(--accent); }
+    button.primary { background: linear-gradient(90deg, #7c3aed, #0891b2); border: none; }
+    button.danger { border-color: rgba(251, 113, 133, 0.45); }
+    .status {
+      margin-top: 0.65rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+      min-height: 1.3rem;
+    }
+    .meter {
+      width: 100%;
+      height: 12px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #0f1021;
+      border: 1px solid #2b2d46;
+    }
+    .meter > span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #34d399, #22d3ee, #c084fc);
+      transition: width 60ms linear;
+    }
+    .note {
+      color: var(--muted);
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+    code {
+      color: var(--ok);
+      background: #0d1324;
+      padding: 0.12rem 0.35rem;
+      border-radius: 5px;
+      border: 1px solid #2a3654;
+    }
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header class="header">
+      <h1>Heaven Voice — Modificateur de voix féminine</h1>
+      <p>Plusieurs modèles prêts à l'emploi + réglages fins en temps réel.</p>
+    </header>
+
+    <section class="grid">
+      <article class="card">
+        <h2>1) Contrôle direct</h2>
+
+        <div class="row">
+          <label for="voicePreset">Modèle de voix féminine</label>
+          <select id="voicePreset">
+            <option value="natural">Naturelle Claire</option>
+            <option value="soft">Douce Breathy</option>
+            <option value="bright">Bright Pop</option>
+            <option value="radio">Radio Propre</option>
+            <option value="anime">Anime Légère</option>
+          </select>
+        </div>
+
+        <div class="row">
+          <label for="pitchShift">Pitch (demi-tons)</label>
+          <input id="pitchShift" type="range" min="-2" max="12" step="1" value="5" />
+        </div>
+
+        <div class="row">
+          <label for="formant">Formant / clarté</label>
+          <input id="formant" type="range" min="0" max="100" step="1" value="56" />
+        </div>
+
+        <div class="row">
+          <label for="presence">Présence aigus</label>
+          <input id="presence" type="range" min="0" max="100" step="1" value="62" />
+        </div>
+
+        <div class="row">
+          <label for="mix">Mix effet</label>
+          <input id="mix" type="range" min="0" max="100" step="1" value="100" />
+        </div>
+
+        <div class="btns">
+          <button id="startBtn" class="primary">Démarrer micro + effet</button>
+          <button id="stopBtn" class="danger">Arrêter</button>
+          <button id="monitorBtn">Monitoring casque: OFF</button>
+        </div>
+
+        <p class="status" id="status">Prêt.</p>
+      </article>
+
+      <article class="card">
+        <h2>2) Niveau micro</h2>
+        <div class="meter"><span id="meterBar"></span></div>
+        <p class="note" id="readout">Niveau: 0%</p>
+
+        <h2 style="margin-top:1rem">3) Utiliser dans Discord/OBS/Jeux</h2>
+        <p class="note">
+          Le navigateur ne peut pas forcer l'entrée micro des autres applis.
+          Pour que les autres t'entendent avec la voix modifiée partout, utilise un câble virtuel audio:
+          <br />1. installe <code>VB-CABLE</code> (ou BlackHole/Soundflower).
+          <br />2. route la sortie de cette app vers le câble virtuel.
+          <br />3. dans Discord/jeu, choisis le câble comme microphone.
+          <br />4. garde le monitoring activé seulement au casque pour éviter le larsen.
+        </p>
+
+        <h2 style="margin-top:1rem">4) Export du flux</h2>
+        <p class="note">
+          Flux traité disponible dans l'app: <code>window.heavenVoiceProcessedStream</code>
+          (pour intégration WebRTC/OBS navigateur).
+        </p>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const voicePreset = document.getElementById('voicePreset');
+    const pitchShift = document.getElementById('pitchShift');
+    const formant = document.getElementById('formant');
+    const presence = document.getElementById('presence');
+    const mix = document.getElementById('mix');
+    const statusEl = document.getElementById('status');
+    const meterBar = document.getElementById('meterBar');
+    const readout = document.getElementById('readout');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const monitorBtn = document.getElementById('monitorBtn');
+
+    let ctx;
+    let micStream;
+    let source;
+    let destination;
+    let analyser;
+    let meterTimer;
+    let monitorGain;
+    let monitoring = false;
+
+    const nodes = {
+      inputGain: null,
+      hp: null,
+      lowMidCut: null,
+      presence: null,
+      air: null,
+      compressor: null,
+      saturator: null,
+      dryGain: null,
+      wetGain: null,
+      outputGain: null,
+      pitchA: null,
+      pitchB: null,
+      pitchBlendA: null,
+      pitchBlendB: null,
+      pitchIn: null,
+      pitchOut: null,
+    };
+
+    const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+
+    function setStatus(msg, isError = false) {
+      statusEl.textContent = msg;
+      statusEl.style.color = isError ? 'var(--danger)' : 'var(--muted)';
+    }
+
+    function createSaturator(context, drive = 1.2) {
+      const wave = context.createWaveShaper();
+      const n = 2048;
+      const curve = new Float32Array(n);
+      for (let i = 0; i < n; i += 1) {
+        const x = (i * 2) / n - 1;
+        curve[i] = Math.tanh(drive * x);
+      }
+      wave.curve = curve;
+      wave.oversample = '2x';
+      return wave;
+    }
+
+    // Pitch shifter dual delay (simple, stable).
+    function createPitchNode(context) {
+      const input = context.createGain();
+      const out = context.createGain();
+      const delayA = context.createDelay();
+      const delayB = context.createDelay();
+      const gainA = context.createGain();
+      const gainB = context.createGain();
+      const xfader = context.createGain();
+
+      const lfoA = context.createOscillator();
+      const lfoB = context.createOscillator();
+      const lfoAGain = context.createGain();
+      const lfoBGain = context.createGain();
+      const mixLfo = context.createOscillator();
+      const mixGain = context.createGain();
+      const mixOffset = context.createConstantSource();
+
+      const baseDelay = 0.03;
+      delayA.delayTime.value = baseDelay;
+      delayB.delayTime.value = baseDelay;
+      gainA.gain.value = 0.5;
+      gainB.gain.value = 0.5;
+
+      input.connect(delayA).connect(gainA).connect(out);
+      input.connect(delayB).connect(gainB).connect(out);
+
+      lfoAGain.connect(delayA.delayTime);
+      lfoBGain.connect(delayB.delayTime);
+      lfoA.connect(lfoAGain);
+      lfoB.connect(lfoBGain);
+
+      mixLfo.connect(mixGain).connect(xfader.gain);
+      mixOffset.offset.value = 0.5;
+      mixOffset.connect(xfader.gain);
+
+      const inv = context.createGain();
+      inv.gain.value = -1;
+      xfader.connect(inv);
+      const add = context.createConstantSource();
+      add.offset.value = 1;
+      add.connect(gainB.gain);
+      inv.connect(gainB.gain);
+      xfader.connect(gainA.gain);
+
+      lfoA.start();
+      lfoB.start();
+      mixLfo.start();
+      mixOffset.start();
+      add.start();
+
+      function setPitch(semitones) {
+        const ratio = Math.pow(2, semitones / 12);
+        const amount = clamp(Math.abs(ratio - 1) * 0.018, 0, 0.015);
+        const speed = clamp(0.12 + Math.abs(semitones) * 0.11, 0.15, 2.5);
+        const sign = semitones >= 0 ? -1 : 1;
+
+        lfoAGain.gain.value = sign * amount;
+        lfoBGain.gain.value = -sign * amount;
+        lfoA.frequency.value = speed;
+        lfoB.frequency.value = speed;
+        lfoB.detune.value = 180;
+
+        mixGain.gain.value = 0.5;
+        mixLfo.frequency.value = speed;
+      }
+
+      setPitch(5);
+
+      return { input, output: out, setPitch };
+    }
+
+    function connectGraph() {
+      nodes.inputGain = ctx.createGain();
+      nodes.hp = ctx.createBiquadFilter();
+      nodes.hp.type = 'highpass';
+      nodes.lowMidCut = ctx.createBiquadFilter();
+      nodes.lowMidCut.type = 'peaking';
+      nodes.presence = ctx.createBiquadFilter();
+      nodes.presence.type = 'peaking';
+      nodes.air = ctx.createBiquadFilter();
+      nodes.air.type = 'highshelf';
+      nodes.compressor = ctx.createDynamicsCompressor();
+      nodes.saturator = createSaturator(ctx, 1.08);
+      nodes.dryGain = ctx.createGain();
+      nodes.wetGain = ctx.createGain();
+      nodes.outputGain = ctx.createGain();
+      nodes.pitchOut = createPitchNode(ctx);
+      nodes.pitchIn = nodes.pitchOut;
+
+      analyser = ctx.createAnalyser();
+      analyser.fftSize = 512;
+
+      source.connect(nodes.inputGain);
+      nodes.inputGain.connect(nodes.dryGain);
+
+      nodes.inputGain.connect(nodes.pitchIn.input);
+      nodes.pitchIn.output
+        .connect(nodes.hp)
+        .connect(nodes.lowMidCut)
+        .connect(nodes.presence)
+        .connect(nodes.air)
+        .connect(nodes.compressor)
+        .connect(nodes.saturator)
+        .connect(nodes.wetGain);
+
+      nodes.dryGain.connect(nodes.outputGain);
+      nodes.wetGain.connect(nodes.outputGain);
+
+      nodes.outputGain.connect(analyser);
+      destination = ctx.createMediaStreamDestination();
+      nodes.outputGain.connect(destination);
+
+      monitorGain = ctx.createGain();
+      monitorGain.gain.value = 0;
+      nodes.outputGain.connect(monitorGain).connect(ctx.destination);
+
+      window.heavenVoiceProcessedStream = destination.stream;
+    }
+
+    function applySettings() {
+      if (!ctx || !nodes.hp) return;
+
+      const f = Number(formant.value) / 100;
+      const p = Number(presence.value) / 100;
+      const m = Number(mix.value) / 100;
+
+      const hpFreq = 120 + f * 170;
+      nodes.hp.frequency.value = hpFreq;
+      nodes.hp.Q.value = 0.7;
+
+      nodes.lowMidCut.frequency.value = 320 + f * 280;
+      nodes.lowMidCut.Q.value = 1.2;
+      nodes.lowMidCut.gain.value = -5 - f * 4;
+
+      nodes.presence.frequency.value = 2800 + p * 2200;
+      nodes.presence.Q.value = 1.1;
+      nodes.presence.gain.value = 1.5 + p * 7;
+
+      nodes.air.frequency.value = 6000;
+      nodes.air.gain.value = 1 + p * 9;
+
+      nodes.compressor.threshold.value = -26;
+      nodes.compressor.knee.value = 14;
+      nodes.compressor.ratio.value = 2.8;
+      nodes.compressor.attack.value = 0.005;
+      nodes.compressor.release.value = 0.12;
+
+      const wet = m;
+      nodes.wetGain.gain.value = wet;
+      nodes.dryGain.gain.value = 1 - wet;
+      nodes.outputGain.gain.value = 0.93;
+
+      const semi = Number(pitchShift.value);
+      nodes.pitchIn.setPitch(semi);
+    }
+
+    function applyPreset(name) {
+      const presets = {
+        natural: { semi: 4, formant: 56, presence: 61, mix: 95 },
+        soft: { semi: 3, formant: 68, presence: 52, mix: 88 },
+        bright: { semi: 6, formant: 64, presence: 76, mix: 100 },
+        radio: { semi: 4, formant: 50, presence: 46, mix: 90 },
+        anime: { semi: 8, formant: 72, presence: 82, mix: 100 },
+      };
+      const pr = presets[name] || presets.natural;
+      pitchShift.value = pr.semi;
+      formant.value = pr.formant;
+      presence.value = pr.presence;
+      mix.value = pr.mix;
+      applySettings();
+    }
+
+    async function start() {
+      try {
+        setStatus('Demande d\'accès au micro...');
+        micStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: false,
+            noiseSuppression: false,
+            autoGainControl: false,
+            channelCount: 1,
+          },
+          video: false,
+        });
+
+        if (!ctx) {
+          ctx = new AudioContext({ latencyHint: 'interactive' });
+        }
+
+        await ctx.resume();
+        source = ctx.createMediaStreamSource(micStream);
+        connectGraph();
+        applyPreset(voicePreset.value);
+        startMeter();
+        setStatus('Actif ✅ — effet appliqué.');
+      } catch (err) {
+        setStatus(`Erreur micro: ${err.message}`, true);
+      }
+    }
+
+    function stop() {
+      if (micStream) {
+        micStream.getTracks().forEach((t) => t.stop());
+        micStream = null;
+      }
+      if (meterTimer) {
+        cancelAnimationFrame(meterTimer);
+        meterTimer = null;
+      }
+      meterBar.style.width = '0%';
+      readout.textContent = 'Niveau: 0%';
+      setStatus('Arrêté.');
+    }
+
+    function startMeter() {
+      const data = new Uint8Array(analyser.fftSize);
+      const loop = () => {
+        analyser.getByteTimeDomainData(data);
+        let sum = 0;
+        for (let i = 0; i < data.length; i += 1) {
+          const sample = (data[i] - 128) / 128;
+          sum += sample * sample;
+        }
+        const rms = Math.sqrt(sum / data.length);
+        const pct = clamp(Math.round(rms * 180), 0, 100);
+        meterBar.style.width = `${pct}%`;
+        readout.textContent = `Niveau: ${pct}%`;
+        meterTimer = requestAnimationFrame(loop);
+      };
+      loop();
+    }
+
+    function toggleMonitoring() {
+      monitoring = !monitoring;
+      if (!monitorGain) return;
+      monitorGain.gain.value = monitoring ? 1 : 0;
+      monitorBtn.textContent = `Monitoring casque: ${monitoring ? 'ON' : 'OFF'}`;
+    }
+
+    startBtn.addEventListener('click', start);
+    stopBtn.addEventListener('click', stop);
+    monitorBtn.addEventListener('click', toggleMonitoring);
+    [pitchShift, formant, presence, mix].forEach((el) => el.addEventListener('input', applySettings));
+    voicePreset.addEventListener('change', (e) => applyPreset(e.target.value));
+  </script>
+</body>
+</html>
