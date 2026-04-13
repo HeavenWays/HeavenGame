@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HeavenGraphX — Boutique Graphisme Premium</title>
+  <style>
+    :root {
+      --bg: #f5f7ff;
+      --surface: #ffffff;
+      --surface-2: #f9fbff;
+      --line: #e3e9f5;
+      --text: #151a2d;
+      --muted: #5f6886;
+      --yellow: #f7c948;
+      --yellow-2: #ffe8aa;
+      --navy: #1d2748;
+      --shadow: 0 16px 40px rgba(29, 39, 72, 0.09);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 0% 0%, rgba(247,201,72,.16), transparent 30%),
+        linear-gradient(180deg, #f9fbff 0%, #f2f5fd 100%);
+    }
+
+    .container { width: min(1360px, 94vw); margin: 0 auto; }
+
+    .topbar {
+      background: linear-gradient(90deg, #1d2748, #273862);
+      color: #eef2ff;
+      text-align: center;
+      font-size: .92rem;
+      padding: .62rem 0;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(249, 251, 255, .92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0;
+    }
+
+    .logo { font-size: 1.23rem; font-weight: 900; letter-spacing: .3px; color: var(--navy); }
+    .logo span { color: #ca8e00; }
+
+    nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      gap: 1.2rem;
+    }
+
+    nav a { text-decoration: none; color: #243258; font-weight: 600; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 12px;
+      padding: .8rem 1.1rem;
+      text-decoration: none;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: #2f2100;
+      background: linear-gradient(130deg, var(--yellow), var(--yellow-2));
+      box-shadow: 0 10px 24px rgba(247, 201, 72, .34);
+    }
+
+    .btn-dark { color: #fff; background: linear-gradient(130deg, #1f2948, #2f3f6f); }
+
+    .hero {
+      padding: 4.2rem 0 3.2rem;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 1.6rem;
+      align-items: center;
+    }
+
+    h1 {
+      margin: 0 0 1rem;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.04;
+      color: var(--navy);
+      max-width: 16ch;
+    }
+
+    .grad {
+      background: linear-gradient(130deg, #f7c948, #d99a00);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin: 0 0 1.3rem;
+      color: var(--muted);
+      font-size: 1.04rem;
+      max-width: 63ch;
+      line-height: 1.6;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+    .hero-points {
+      margin-top: 1rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .55rem;
+    }
+
+    .pill {
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: .38rem .78rem;
+      background: var(--surface);
+      color: #37456b;
+      font-size: .84rem;
+    }
+
+    .hero-image {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: .9rem;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-image img {
+      width: 100%;
+      border-radius: 14px;
+      display: block;
+      aspect-ratio: 21/9;
+      object-fit: cover;
+    }
+
+    section { padding: 3rem 0; }
+
+    .section-title {
+      margin: 0;
+      color: var(--navy);
+      font-size: 2rem;
+    }
+
+    .section-sub {
+      margin: .4rem 0 1.2rem;
+      color: var(--muted);
+      max-width: 76ch;
+      line-height: 1.6;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .card img { width: 100%; display: block; aspect-ratio: 21/9; object-fit: cover; }
+    .card-body { padding: 1.1rem; }
+
+    .tag {
+      display: inline-block;
+      margin-bottom: .6rem;
+      border-radius: 999px;
+      padding: .2rem .56rem;
+      font-size: .78rem;
+      font-weight: 800;
+      color: #352500;
+      background: linear-gradient(130deg, #ffecb7, #f7c948);
+    }
+
+    .features { margin: .5rem 0 1rem; padding-left: 1.1rem; color: #4a567a; line-height: 1.55; }
+    .old-price { color: #8d97b3; text-decoration: line-through; font-size: .9rem; }
+    .price { margin: .45rem 0 .85rem; font-size: 1.45rem; font-weight: 900; color: #d79a0a; }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .kpi {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .kpi strong { display: block; color: var(--navy); font-size: 1.2rem; margin-bottom: .2rem; }
+    .kpi span { color: #576184; font-size: .92rem; }
+
+    .formation-box {
+      background: linear-gradient(140deg, #fff8e6, #fff3cd);
+      border: 1px solid #f0d07a;
+      border-radius: 20px;
+      padding: 1.2rem;
+      box-shadow: var(--shadow);
+    }
+
+    .formation-wrap {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 1.1rem;
+      align-items: start;
+    }
+
+    .bonus-list { margin: .55rem 0 0; padding-left: 1rem; color: #3f4b6d; line-height: 1.55; }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .testimonials {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .testimonial {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    .testimonial p { margin: 0 0 .55rem; color: #3f4c72; line-height: 1.55; }
+    .testimonial small { color: #65708f; }
+
+    .faq-item {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      padding: .95rem 1rem;
+      margin-bottom: .7rem;
+    }
+
+    .faq-item h3 { margin: 0 0 .35rem; color: var(--navy); font-size: 1rem; }
+    .faq-item p { margin: 0; color: #4d5980; line-height: 1.55; }
+
+    .contact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    form {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 1rem;
+    }
+
+    input, textarea {
+      width: 100%;
+      border: 1px solid #d8deef;
+      border-radius: 10px;
+      padding: .74rem;
+      margin-bottom: .65rem;
+      background: var(--surface-2);
+      color: #1a2442;
+    }
+
+    footer {
+      margin-top: 1.4rem;
+      border-top: 1px solid var(--line);
+      text-align: center;
+      color: #6a7392;
+      padding: 1.4rem 0 1.8rem;
+    }
+
+    @media (max-width: 1080px) {
+      .hero, .formation-wrap, .split, .contact { grid-template-columns: 1fr; }
+      .grid-3, .testimonials { grid-template-columns: repeat(2, 1fr); }
+      .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+      nav ul { display: none; }
+    }
+
+    @media (max-width: 700px) {
+      .grid-3, .kpi-grid, .testimonials { grid-template-columns: 1fr; }
+      section { padding: 2.2rem 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">⚡ Offre entrepreneur: Bannière 17€ • Logo 27€ • Formation complète HeavenGraphX disponible</div>
+
+  <header>
+    <div class="container nav">
+      <div class="logo">Heaven<span>GraphX</span></div>
+      <nav>
+        <ul>
+          <li><a href="#boutique">Boutique</a></li>
+          <li><a href="#formation">Formation</a></li>
+          <li><a href="#avis">Avis</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn-dark" href="#boutique">Explorer les offres</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <h1>Un vrai site <span class="grad">e‑commerce</span> pour vendre tes services graphisme.</h1>
+        <p class="subtitle">Design plus propre, sections mieux organisées, meilleurs espacements, structure conversion complète: boutique, preuve sociale, FAQ, contact et offre formation unique.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#boutique">Acheter maintenant</a>
+          <a class="btn btn-dark" href="#formation">Voir la formation</a>
+        </div>
+        <div class="hero-points">
+          <span class="pill">✅ Positionnement pro</span>
+          <span class="pill">✅ Sections e-commerce complètes</span>
+          <span class="pill">✅ Paiement sécurisé Stripe</span>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="assets/banners/banner-bleu.svg" alt="Hero HeavenGraphX" />
+      </div>
+    </section>
+
+    <section>
+      <h2 class="section-title">Indicateurs de confiance</h2>
+      <p class="section-sub">Blocs de réassurance utilisés par les meilleurs sites e-commerce pour convertir davantage.</p>
+      <div class="kpi-grid">
+        <article class="kpi"><strong>+120</strong><span>Projets livrés</span></article>
+        <article class="kpi"><strong>24-72h</strong><span>Délai moyen de livraison</span></article>
+        <article class="kpi"><strong>4.9/5</strong><span>Note client moyenne</span></article>
+        <article class="kpi"><strong>100%</strong><span>Offres personnalisées</span></article>
+      </div>
+    </section>
+
+    <section id="boutique">
+      <h2 class="section-title">Boutique HeavenGraphX</h2>
+      <p class="section-sub">Une seule section produits claire (sans duplication), avec visuels, bénéfices, prix et CTA.</p>
+      <div class="grid-3">
+        <article class="card">
+          <img src="assets/banners/banner-verte.svg" alt="Bannière exemple verte" />
+          <div class="card-body">
+            <span class="tag">Best Seller</span>
+            <h3>Bannière Réseaux Pro</h3>
+            <ul class="features">
+              <li>YouTube / Twitch / Facebook</li>
+              <li>2 propositions créatives</li>
+              <li>Retouches incluses</li>
+            </ul>
+            <div class="old-price">Avant 59€</div>
+            <p class="price">17€</p>
+            <a class="btn btn-primary" href="#contact">Commander</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="assets/banners/banner-jaune.svg" alt="Bannière exemple jaune" />
+          <div class="card-body">
+            <span class="tag">Brand Identity</span>
+            <h3>Logo Professionnel</h3>
+            <ul class="features">
+              <li>Concept unique & différenciant</li>
+              <li>Version claire + sombre</li>
+              <li>Fichiers HD et vectoriels</li>
+            </ul>
+            <div class="old-price">Avant 99€</div>
+            <p class="price">27€</p>
+            <a class="btn btn-primary" href="#contact">Commander</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <img src="assets/banners/banner-bleu.svg" alt="Bannière exemple bleue" />
+          <div class="card-body">
+            <span class="tag">Pack Premium</span>
+            <h3>Bannière + Logo</h3>
+            <ul class="features">
+              <li>Direction artistique complète</li>
+              <li>Cohérence de marque</li>
+              <li>Livraison prioritaire</li>
+            </ul>
+            <p class="price">39€</p>
+            <a class="btn btn-primary" href="#contact">Demander un devis</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="formation">
+      <h2 class="section-title">Formation unique HeavenGraphX</h2>
+      <p class="section-sub">Un seul pack ultra complet pour apprendre bannière + logo et obtenir les bonus outils.</p>
+      <div class="formation-box">
+        <div class="formation-wrap">
+          <article class="card">
+            <div class="card-body">
+              <span class="tag">PACK UNIQUE</span>
+              <h3>Masterclass Graphiste E‑commerce</h3>
+              <ul class="features">
+                <li>Créer des bannières premium qui convertissent</li>
+                <li>Créer des logos professionnels vendables</li>
+                <li>Méthode de vente client + présentation d’offres</li>
+                <li>Workflow complet pour produire vite et proprement</li>
+              </ul>
+              <p class="price">149€</p>
+              <a class="btn btn-dark" href="#contact">Je prends le pack</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-body">
+              <h3>Bonus inclus</h3>
+              <ul class="bonus-list">
+                <li>✅ Photoshop (setup + ressources)</li>
+                <li>✅ Cinema 4D (base + presets)</li>
+                <li>✅ Plugins et ressources premium</li>
+                <li>✅ Pack textures, mockups et polices</li>
+                <li>✅ Support privé progression</li>
+              </ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="avis">
+      <h2 class="section-title">Avis clients</h2>
+      <p class="section-sub">Preuves sociales pour rassurer les nouveaux acheteurs.</p>
+      <div class="testimonials">
+        <article class="testimonial"><p>“Le rendu est propre et pro, mes conversions ont augmenté.”</p><small>— Sky, entrepreneur</small></article>
+        <article class="testimonial"><p>“Super rapide, super clair. Le logo m’a aidée à passer premium.”</p><small>— Mira, coach business</small></article>
+        <article class="testimonial"><p>“HeavenGraphX c’est du sérieux, résultat top dès la première version.”</p><small>— Nox, créateur</small></article>
+      </div>
+    </section>
+
+    <section class="split" id="paiement">
+      <article>
+        <h2 class="section-title">Paiement sécurisé Stripe</h2>
+        <p class="section-sub">Toutes les méthodes utilisées en e-commerce moderne.</p>
+        <div class="card"><div class="card-body"><ul class="bonus-list"><li>Visa / Mastercard / Amex</li><li>Apple Pay / Google Pay</li><li>SEPA / virement (selon pays)</li><li>Cartes prépayées compatibles</li></ul></div></div>
+      </article>
+      <article>
+        <h2 class="section-title">Garantie qualité</h2>
+        <p class="section-sub">Process clair, communication fluide, rendu professionnel et livrable exploitable.</p>
+        <div class="card"><div class="card-body"><p style="margin:0;color:#4e5a80;line-height:1.65;">✅ Qualité premium<br />✅ Retouches incluses<br />✅ Délai respecté<br />✅ Accompagnement personnalisé</p></div></div>
+      </article>
+    </section>
+
+    <section id="faq">
+      <h2 class="section-title">FAQ</h2>
+      <p class="section-sub">Questions fréquentes avant achat.</p>
+      <div class="faq-item"><h3>En combien de temps je reçois ma commande ?</h3><p>Généralement entre 24h et 72h selon l’offre et les retours.</p></div>
+      <div class="faq-item"><h3>Est-ce que je peux demander des retouches ?</h3><p>Oui, toutes les offres incluent des retouches pour valider un résultat propre.</p></div>
+      <div class="faq-item"><h3>La formation est bien en un seul pack ?</h3><p>Oui, c’est un seul pack complet logo + bannière + bonus outils/plugins.</p></div>
+    </section>
+
+    <section id="contact">
+      <h2 class="section-title">Contact & commande</h2>
+      <p class="section-sub">Envoie ton besoin et je te réponds rapidement pour lancer ta commande.</p>
+      <div class="contact">
+        <article class="card"><div class="card-body"><h3>HeavenGraphX</h3><p style="color:#4d5980;line-height:1.65;">Email: hello@heavengraphx.com<br />WhatsApp: +33 6 00 00 00 00<br />Instagram: @heavengraphx</p></div></article>
+        <form>
+          <input type="text" placeholder="Nom" required />
+          <input type="email" placeholder="Email" required />
+          <textarea rows="5" placeholder="Offre souhaitée, budget, deadline..."></textarea>
+          <button class="btn btn-primary" type="submit">Envoyer ma demande</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>© 2026 HeavenGraphX — Boutique e-commerce graphisme & formation.</footer>
+</body>
+</html>
