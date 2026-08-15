@@ -50,10 +50,11 @@ object Updater {
             client.newCall(req).execute().use { resp ->
                 val raw = resp.body?.string().orEmpty()
                 if (!resp.isSuccessful) {
-                    return@withContext UpdateInfo(
-                        false, 0, "", "", "",
+                    val friendly = if (resp.code == 404)
+                        "Aucune version publiée pour l'instant. Le premier build qui publie une Release GitHub l'activera."
+                    else
                         "Impossible de vérifier les mises à jour (code ${resp.code})."
-                    )
+                    return@withContext UpdateInfo(false, 0, "", "", "", friendly)
                 }
                 val json = JSONObject(raw)
                 val tag = json.optString("tag_name")                 // ex. "v3"
